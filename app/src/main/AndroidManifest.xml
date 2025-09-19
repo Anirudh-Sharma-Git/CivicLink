@@ -13,18 +13,24 @@
         android:theme="@style/Theme.CivicLink2O"
         tools:targetApi="31">
 
-        <!-- Activity 1: The Language Selection Screen. This is the LAUNCHER. -->
+        <!-- Activity 1: The Splash Screen. This is now the LAUNCHER. -->
         <activity
-            android:name=".LanguageSelectionActivity"
-            android:exported="true">
+            android:name=".SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.NoActionBar"> <!-- Added theme for a true fullscreen splash -->
+            <!-- This intent-filter tells Android this is the starting activity -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <!-- Activity 2: The Main Screen. It MUST be declared here! -->
-        <!-- THIS IS THE FIX. THIS BLOCK REGISTERS YOUR MAINACTIVITY. -->
+        <!-- Activity 2: The Language Selection Screen is now a regular activity. -->
+        <activity
+            android:name=".LanguageSelectionActivity"
+            android:exported="false" /> <!-- Must be false for non-launcher activities -->
+
+        <!-- Activity 3: The Main Screen. -->
         <activity
             android:name=".MainActivity"
             android:exported="false" />

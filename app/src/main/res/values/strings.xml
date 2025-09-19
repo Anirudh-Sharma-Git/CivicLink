@@ -40,4 +40,11 @@
     <string name="footer_text">Government of Jharkhand Initiative\nDigital India • Smart City Mission</string>
     <string name="footer_line_1">Government of Jharkhand Initiative</string>
     <string name="footer_line_2">Digital India • Smart City Mission</string>
+
+    <!-- NEW STRINGS FOR SPLASH SCREEN -->
+    <string name="splash_subtitle1">Civic Issue Reporting</string>
+    <string name="splash_subtitle2">Making your city better, together</string>
+    <string name="splash_footer1">Government of Jharkhand</string>
+    <string name="splash_footer2">Digital India Initiative</string>
+
 </resources>

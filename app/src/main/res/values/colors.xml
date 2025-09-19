@@ -12,6 +12,7 @@
 
     <!-- Card and Text Colors -->
     <color name="card_background">#FFFFFF</color> <!-- THIS IS THE CARD BACKGROUND COLOR -->
-
+    <!-- NEW COLOR FOR SPLASH SCREEN -->
+    <color name="white_70">#B3FFFFFF</color> <!-- White with 70% opacity -->
 </resources>
 

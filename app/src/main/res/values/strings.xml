@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">CivicLinkApp</string>
+
+    <!-- Content Descriptions for Accessibility -->
+    <string name="app_logo">App Logo</string>
+
+    <!-- Main Screen Text -->
+    <string name="app_title">CivicLink</string>
+    <string name="choose_language_prompt_en">Choose your preferred language</string>
+    <string name="choose_language_prompt_hi">अपनी पसंदीदा भाषा चुनें</string>
+    <string name="choose_language_prompt_bn">আপনার পছন্দের ভাষা নির্বাচন করুন</string>
+
+    <!-- Language Names -->
+    <string name="lang_english">English</string>
+    <string name="lang_english_native">English</string>
+
+    <string name="lang_hindi">Hindi</string>
+    <string name="lang_hindi_native">हिन्दी</string>
+
+    <string name="lang_bengali">Bengali</string>
+    <string name="lang_bengali_native">বাংলা</string>
+
+    <string name="lang_santali">Santali</string>
+    <string name="lang_santali_native">ᱥᱟᱱᱛᱟᱲᱤ</string>
+
+    <string name="lang_urdu">Urdu</string>
+    <string name="lang_urdu_native">اردو</string>
+
+    <string name="lang_odia">Odia</string>
+    <string name="lang_odia_native">ଓଡ଼ିଆ</string>
+
+    <string name="lang_telugu">Telugu</string>
+    <string name="lang_telugu_native">తెలుగు</string>
+
+    <string name="lang_marathi">Marathi</string>
+    <string name="lang_marathi_native">मराठी</string>
+
+
+    <!-- Footer Text -->
+    <string name="footer_text">Government of Jharkhand Initiative\nDigital India • Smart City Mission</string>
+    <string name="footer_line_1">Government of Jharkhand Initiative</string>
+    <string name="footer_line_2">Digital India • Smart City Mission</string>
+</resources>

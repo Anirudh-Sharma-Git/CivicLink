@@ -1,289 +1,297 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- By making ScrollView the root, it handles system windows and scrolling correctly. -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_background"
+    android:fillViewport="true"
     android:fitsSystemWindows="true"
     tools:context=".LoginActivity">
 
-    <!-- Top Icon -->
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="60dp"
-        android:background="@drawable/logo_background_shape"
-        android:contentDescription="@string/app_logo"
-        android:padding="20dp"
-        android:src="@drawable/ic_person"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/white" />
+    <!-- The ConstraintLayout now sits inside the ScrollView -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <!-- Welcome Text -->
-    <TextView
-        android:id="@+id/welcomeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/welcome_to_civiclink"
-        android:textColor="@color/text_primary"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/icon" />
+        <!-- Top Icon -->
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="60dp"
+            android:background="@drawable/logo_background_shape"
+            android:contentDescription="@string/app_logo"
+            android:padding="20dp"
+            android:src="@drawable/ic_person"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/white" />
 
-    <TextView
-        android:id="@+id/welcomeSubtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="@string/login_or_create_account"
-        android:textColor="@color/text_secondary"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/welcomeText" />
-
-
-    <!-- Main Content Card -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/mainCard"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/welcomeSubtitle">
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <!-- Welcome Text -->
+        <TextView
+            android:id="@+id/welcomeText"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp">
+            android:layout_marginTop="16dp"
+            android:text="@string/welcome_to_civiclink"
+            android:textColor="@color/text_primary"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/icon" />
 
-            <!-- Segmented Control (Phone/Email Toggle) -->
+        <TextView
+            android:id="@+id/welcomeSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/login_or_create_account"
+            android:textColor="@color/text_secondary"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/welcomeText" />
+
+        <!-- Main Content Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/mainCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/welcomeSubtitle">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/toggle_container_background"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/phoneLoginToggle"
-                    style="@style/ToggleTextView"
-                    android:text="@string/phone_login" />
-
-                <TextView
-                    android:id="@+id/emailLoginToggle"
-                    style="@style/ToggleTextView"
-                    android:text="@string/email_login" />
-            </LinearLayout>
-
-            <!-- FORM: Phone Login -->
-            <LinearLayout
-                android:id="@+id/phoneLoginLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:orientation="vertical"
-                android:visibility="gone"
-                tools:visibility="visible">
+                android:padding="20dp">
 
+                <!-- Segmented Control (Phone/Email Toggle) -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/toggle_container_background"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/phoneLoginToggle"
+                        style="@style/ToggleTextView"
+                        android:text="@string/phone_login" />
+
+                    <TextView
+                        android:id="@+id/emailLoginToggle"
+                        style="@style/ToggleTextView"
+                        android:text="@string/email_login" />
+                </LinearLayout>
+
+                <!-- FORM: Phone Login -->
+                <LinearLayout
+                    android:id="@+id/phoneLoginLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <TextView
+                        style="@style/InputLabel"
+                        android:text="@string/phone_number" />
+
+                    <EditText
+                        android:id="@+id/phoneLoginNumber"
+                        style="@style/InputField"
+                        android:hint="@string/phone_hint"
+                        android:inputType="phone" />
+
+                    <Button
+                        android:id="@+id/sendOtpButton"
+                        style="@style/PrimaryButton"
+                        android:layout_marginTop="20dp"
+                        android:text="@string/send_otp" />
+                </LinearLayout>
+
+                <!-- FORM: Email Login -->
+                <LinearLayout
+                    android:id="@+id/emailLoginLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        style="@style/InputLabel"
+                        android:text="@string/email" />
+
+                    <EditText
+                        android:id="@+id/emailLoginEmail"
+                        style="@style/InputField"
+                        android:hint="@string/email_hint"
+                        android:inputType="textEmailAddress" />
+
+                    <TextView
+                        style="@style/InputLabel"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/password" />
+
+                    <EditText
+                        android:id="@+id/emailLoginPassword"
+                        style="@style/InputField"
+                        android:hint="@string/password_hint"
+                        android:inputType="textPassword" />
+
+                    <Button
+                        android:id="@+id/loginButton"
+                        style="@style/PrimaryButton"
+                        android:layout_marginTop="20dp"
+                        android:text="@string/login" />
+                </LinearLayout>
+
+                <!-- FORM: Phone Sign Up -->
+                <LinearLayout
+                    android:id="@+id/phoneSignUpLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        style="@style/InputLabel"
+                        android:text="@string/name" />
+
+                    <EditText
+                        android:id="@+id/phoneSignUpName"
+                        style="@style/InputField"
+                        android:hint="@string/name_hint"
+                        android:inputType="textPersonName" />
+
+                    <TextView
+                        style="@style/InputLabel"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/phone_number" />
+
+                    <EditText
+                        android:id="@+id/phoneSignUpNumber"
+                        style="@style/InputField"
+                        android:hint="@string/phone_hint"
+                        android:inputType="phone" />
+
+                    <Button
+                        android:id="@+id/phoneSignUpButton"
+                        style="@style/PrimaryButton"
+                        android:layout_marginTop="20dp"
+                        android:text="@string/send_otp" />
+                </LinearLayout>
+
+                <!-- FORM: Email Sign Up -->
+                <LinearLayout
+                    android:id="@+id/emailSignUpLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        style="@style/InputLabel"
+                        android:text="@string/name" />
+
+                    <EditText
+                        android:id="@+id/emailSignUpName"
+                        style="@style/InputField"
+                        android:hint="@string/name_hint"
+                        android:inputType="textPersonName" />
+
+                    <TextView
+                        style="@style/InputLabel"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/email" />
+
+                    <EditText
+                        android:id="@+id/emailSignUpEmail"
+                        style="@style/InputField"
+                        android:hint="@string/email_hint"
+                        android:inputType="textEmailAddress" />
+
+                    <TextView
+                        style="@style/InputLabel"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/password" />
+
+                    <EditText
+                        android:id="@+id/emailSignUpPassword"
+                        style="@style/InputField"
+                        android:hint="@string/password_hint"
+                        android:inputType="textPassword" />
+
+
+
+                    <TextView
+                        style="@style/InputLabel"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/confirm_password" />
+
+                    <EditText
+                        android:id="@+id/emailSignUpConfirmPassword"
+                        style="@style/InputField"
+                        android:hint="@string/confirm_password_hint"
+                        android:inputType="textPassword" />
+
+                    <Button
+                        android:id="@+id/emailSignUpButton"
+                        style="@style/PrimaryButton"
+                        android:layout_marginTop="20dp"
+                        android:text="@string/sign_up" />
+                </LinearLayout>
+
+                <!-- Toggle between Login and Sign Up -->
                 <TextView
-                    style="@style/InputLabel"
-                    android:text="@string/phone_number" />
+                    android:id="@+id/toggleLoginSignUp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="16dp"
+                    android:padding="8dp"
+                    android:text="@string/new_user_signup"
+                    android:textColor="@color/logo_background"
+                    android:textSize="14sp" />
 
-                <EditText
-                    android:id="@+id/phoneLoginNumber"
-                    style="@style/InputField"
-                    android:hint="@string/phone_hint"
-                    android:inputType="phone" />
-
-                <Button
-                    android:id="@+id/sendOtpButton"
-                    style="@style/PrimaryButton"
-                    android:layout_marginTop="20dp"
-                    android:text="@string/send_otp" />
             </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
+        <!-- Continue as Guest Button -->
+        <Button
+            android:id="@+id/guestButton"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/guest_button_background"
+            android:text="@string/continue_as_guest"
+            android:textAllCaps="false"
+            android:textColor="@color/text_secondary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mainCard"
 
-            <!-- FORM: Email Login -->
-            <LinearLayout
-                android:id="@+id/emailLoginLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:orientation="vertical"
-                android:visibility="gone">
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.0"/>
 
-                <TextView
-                    style="@style/InputLabel"
-                    android:text="@string/email" />
-
-                <EditText
-                    android:id="@+id/emailLoginEmail"
-                    style="@style/InputField"
-                    android:hint="@string/email_hint"
-                    android:inputType="textEmailAddress" />
-
-                <TextView
-                    style="@style/InputLabel"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/password" />
-
-                <EditText
-                    android:id="@+id/emailLoginPassword"
-                    style="@style/InputField"
-                    android:hint="@string/password_hint"
-                    android:inputType="textPassword" />
-
-                <Button
-                    android:id="@+id/loginButton"
-                    style="@style/PrimaryButton"
-                    android:layout_marginTop="20dp"
-                    android:text="@string/login" />
-            </LinearLayout>
-
-
-            <!-- FORM: Phone Sign Up -->
-            <LinearLayout
-                android:id="@+id/phoneSignUpLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <TextView
-                    style="@style/InputLabel"
-                    android:text="@string/name" />
-
-                <EditText
-                    android:id="@+id/phoneSignUpName"
-                    style="@style/InputField"
-                    android:hint="@string/name_hint"
-                    android:inputType="textPersonName" />
-
-                <TextView
-                    style="@style/InputLabel"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/phone_number" />
-
-                <EditText
-                    android:id="@+id/phoneSignUpNumber"
-                    style="@style/InputField"
-                    android:hint="@string/phone_hint"
-                    android:inputType="phone" />
-
-                <Button
-                    android:id="@+id/phoneSignUpButton"
-                    style="@style/PrimaryButton"
-                    android:layout_marginTop="20dp"
-                    android:text="@string/send_otp" />
-            </LinearLayout>
-
-
-            <!-- FORM: Email Sign Up -->
-            <LinearLayout
-                android:id="@+id/emailSignUpLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <TextView
-                    style="@style/InputLabel"
-                    android:text="@string/name" />
-
-                <EditText
-                    android:id="@+id/emailSignUpName"
-                    style="@style/InputField"
-                    android:hint="@string/name_hint"
-                    android:inputType="textPersonName" />
-
-                <TextView
-                    style="@style/InputLabel"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/email" />
-
-                <EditText
-                    android:id="@+id/emailSignUpEmail"
-                    style="@style/InputField"
-                    android:hint="@string/email_hint"
-                    android:inputType="textEmailAddress" />
-
-                <TextView
-                    style="@style/InputLabel"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/password" />
-
-                <EditText
-                    android:id="@+id/emailSignUpPassword"
-                    style="@style/InputField"
-                    android:hint="@string/password_hint"
-                    android:inputType="textPassword" />
-
-                <TextView
-                    style="@style/InputLabel"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/confirm_password" />
-
-                <EditText
-                    android:id="@+id/emailSignUpConfirmPassword"
-                    style="@style/InputField"
-                    android:hint="@string/confirm_password_hint"
-                    android:inputType="textPassword" />
-
-                <Button
-                    android:id="@+id/emailSignUpButton"
-                    style="@style/PrimaryButton"
-                    android:layout_marginTop="20dp"
-                    android:text="@string/sign_up" />
-            </LinearLayout>
-
-
-            <!-- Toggle between Login and Sign Up -->
-            <TextView
-                android:id="@+id/toggleLoginSignUp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:padding="8dp"
-                android:text="@string/new_user_signup"
-                android:textColor="@color/logo_background"
-                android:textSize="14sp" />
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-
-    <!-- Continue as Guest Button -->
-    <Button
-        android:id="@+id/guestButton"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/guest_button_background"
-        android:text="@string/continue_as_guest"
-        android:textAllCaps="false"
-        android:textColor="@color/text_secondary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
 

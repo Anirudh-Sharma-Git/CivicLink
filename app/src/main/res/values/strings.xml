@@ -50,8 +50,8 @@
     <!-- Login/Sign Up Screen -->
     <string name="welcome_to_civiclink">Welcome to CivicLink</string>
     <string name="login_or_create_account">Login or create a new account</string>
-    <string name="phone_login">Phone Login</string>
-    <string name="email_login">Email Login</string>
+    <string name="phone_login">Phone</string>
+    <string name="email_login">Email</string>
     <string name="phone_number">Phone Number</string>
     <string name="phone_hint">+91 9876543210</string>
     <string name="send_otp">Send OTP</string>
@@ -68,5 +68,6 @@
     <string name="sign_up">Sign Up</string>
     <string name="already_have_account_login">Already have an account? Login</string>
     <string name="continue_as_guest">Continue as Guest</string>
+    <string name="already_have_account">Already have an account? Login</string>
 
 </resources>

@@ -14,5 +14,9 @@
     <color name="card_background">#FFFFFF</color> <!-- THIS IS THE CARD BACKGROUND COLOR -->
     <!-- NEW COLOR FOR SPLASH SCREEN -->
     <color name="white_70">#B3FFFFFF</color> <!-- White with 70% opacity -->
+    <!-- NEW COLORS FOR LOGIN SCREEN -->
+    <color name="button_grey">#A0A0A0</color>
+    <color name="input_field_background">#F4F6F9</color>
+    <color name="input_field_border">#E0E0E0</color>
 </resources>
 

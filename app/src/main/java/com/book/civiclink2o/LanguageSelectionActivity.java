@@ -63,7 +63,7 @@ public class LanguageSelectionActivity extends AppCompatActivity implements View
             Toast.makeText(this, language + " selected", Toast.LENGTH_SHORT).show();
 
             // Create an Intent to open MainActivity
-            Intent intent = new Intent(LanguageSelectionActivity.this, MainActivity.class);
+            Intent intent = new Intent(LanguageSelectionActivity.this, LoginActivity.class);
 
             // Pass the selected language to the MainActivity
             intent.putExtra("SELECTED_LANGUAGE", language);

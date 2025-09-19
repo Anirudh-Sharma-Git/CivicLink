@@ -32,7 +32,7 @@
 
         <!-- Activity 3: The Main Screen. -->
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:exported="false" />
 
     </application>

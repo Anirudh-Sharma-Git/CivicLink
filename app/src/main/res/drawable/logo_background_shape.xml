@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This drawable creates a perfect circle shape. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <!-- The 'oval' shape creates a circle if the width and height are equal. -->
+    <!-- We set the color to our primary logo background color. -->
+    <solid android:color="@color/logo_background" />
+
+</shape>
+

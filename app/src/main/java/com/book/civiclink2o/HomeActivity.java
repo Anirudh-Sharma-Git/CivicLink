@@ -61,9 +61,11 @@ public class HomeActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // We will create RaiseIssueActivity in the next steps
-                // Intent intent = new Intent(HomeActivity.this, RaiseIssueActivity.class);
-                // startActivity(intent);
+                // --- THIS IS THE FIX ---
+                // The following two lines have been uncommented to make the button work.
+                Intent intent = new Intent(HomeActivity.this, RaiseIssueActivity.class);
+                startActivity(intent);
+                // --- END OF FIX ---
             }
         });
     }
@@ -79,3 +81,4 @@ public class HomeActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 }
+

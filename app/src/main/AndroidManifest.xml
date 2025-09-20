@@ -13,29 +13,37 @@
         android:theme="@style/Theme.CivicLink2O"
         tools:targetApi="31">
 
-        <!-- Activity 1: The Splash Screen. This is now the LAUNCHER. -->
+        <!-- Activity 1: The Splash Screen (Launcher) -->
         <activity
             android:name=".SplashActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.NoActionBar"> <!-- Added theme for a true fullscreen splash -->
-            <!-- This intent-filter tells Android this is the starting activity -->
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <!-- Activity 2: The Language Selection Screen is now a regular activity. -->
+        <!-- Activity 2: The Language Selection Screen -->
         <activity
             android:name=".LanguageSelectionActivity"
-            android:exported="false" /> <!-- Must be false for non-launcher activities -->
+            android:exported="false" />
 
-        <!-- Activity 3: The Main Screen. -->
+        <!-- Activity 3: The Login Screen -->
         <activity
             android:name=".LoginActivity"
+            android:exported="false" />
+
+        <!-- Activity 4: The Main Home Screen -->
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false" />
+
+        <!-- Activity 5: The Raise Issue Screen -->
+        <activity
+            android:name=".RaiseIssueActivity"
             android:exported="false" />
 
     </application>
 
 </manifest>
-

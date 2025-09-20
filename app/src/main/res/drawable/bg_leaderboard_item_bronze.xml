@@ -1,0 +1,11 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/leaderboard_bronze_bg" />
+    <stroke
+        android:width="2dp"
+        android:color="@color/leaderboard_bronze_stroke"
+        android:dashWidth="10dp"
+        android:dashGap="8dp" />
+    <corners android:radius="16dp" />
+</shape>
+

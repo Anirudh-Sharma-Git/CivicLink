@@ -1,5 +1,6 @@
 package com.book.civiclink2o;
 
+import android.content.Intent; // Import the Intent class
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -63,17 +64,31 @@ public class LoginActivity extends AppCompatActivity {
             isLogin = !isLogin; // Flip between login and sign-up
             updateUI();
         });
+
+        // --- THIS IS THE FIX ---
+        // Add the missing click listener for the guest button
+        guestButton.setOnClickListener(v -> {
+            navigateToHome();
+        });
+        // --- END OF FIX ---
     }
 
+    // --- THIS IS A NEW HELPER METHOD ---
+    // A clean way to handle navigation to the home screen
+    private void navigateToHome() {
+        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+        startActivity(intent);
+        finish(); // Finish LoginActivity so the user can't go back to it
+    }
+    // --- END OF NEW HELPER METHOD ---
+
     private void updateUI() {
-        // --- THIS IS THE NEW LOGIC ---
         // Show the guest button ONLY when on a login screen. Hide it for sign-up.
         if (isLogin) {
             guestButton.setVisibility(View.VISIBLE);
         } else {
             guestButton.setVisibility(View.GONE);
         }
-        // --- END OF NEW LOGIC ---
 
         // Update toggle styles
         updateToggleStyles();
@@ -117,4 +132,3 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 }
-

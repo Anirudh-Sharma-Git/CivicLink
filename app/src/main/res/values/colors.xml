@@ -18,5 +18,111 @@
     <color name="button_grey">#A0A0A0</color>
     <color name="input_field_background">#F4F6F9</color>
     <color name="input_field_border">#E0E0E0</color>
+
+    <!-- App Theme Colors -->
+    <color name="brand_primary">#4A37BE</color> <!-- Main purple for buttons, icons, etc. -->
+    <color name="brand_secondary">#D6D2F1</color> <!-- Lighter purple for backgrounds -->
+    <color name="chip_selected_bg">#333333</color> <!-- Dark grey for selected filter chips -->
+
+    <!-- Text Colors -->
+    <color name="text_on_brand">#FFFFFF</color> <!-- White text on purple backgrounds -->
+    <color name="text_link">#4A37BE</color> <!-- Purple for clickable text links -->
+    <color name="chip_unselected_text">#555555</color>
+
+    <!-- Status Tag Colors -->
+    <color name="status_pending_bg">#FFEBEB</color> <!-- Light pink -->
+    <color name="status_pending_text">#E53935</color> <!-- Dark red -->
+    <color name="status_inprogress_bg">#FFF9E5</color> <!-- Light yellow -->
+    <color name="status_inprogress_text">#FFA000</color> <!-- Dark yellow/orange -->
+    <color name="status_resolved_bg">#E8F5E9</color> <!-- Light green -->
+    <color name="status_resolved_text">#388E3C</color> <!-- Dark green -->
+
+    <!-- Other UI Colors -->
+    <color name="nav_unselected">#9E9E9E</color> <!-- Grey for unselected nav items -->
+    <color name="border_color">#E0E0E0</color> <!-- Light grey for borders and dividers -->
+    <color name="logout_red">#D32F2F</color> <!-- Red for the logout button -->
+    <color name="transparent">#00000000</color>
+
+
+
+    <!-- General App & Text Colors -->
+
+    <color name="icon_default">#8A8A8A</color>
+
+    <!-- Primary Brand Color -->
+    <color name="brand_primary_dark">#3A2A9A</color> <!-- Darker purple for pressed states -->
+
+
+    <!-- Splash Screen -->
+    <color name="splash_text">#FFFFFFB3</color> <!-- White with 70% opacity -->
+
+    <!-- Login Screen -->
+    <color name="toggle_selected_background">@color/brand_primary</color>
+    <color name="toggle_unselected_background">#E0E0E0</color>
+    <color name="guest_button_background">@color/white</color>
+
+    <!-- Home Screen & Issue Cards -->
+    <color name="search_bar_background">@color/white</color>
+    <color name="chip_selected_background">#333333</color>
+    <color name="chip_unselected_border">#E0E0E0</color>
+    <color name="upvote_background">#E8EAF6</color>
+    <color name="upvote_text">#3F51B5</color>
+
+    <!-- Status Tag Colors -->
+    <color name="status_pending_background">#FFE0E6</color>
+    <color name="status_inprogress_background">#FFF9C4</color>
+    <color name="status_resolved_background">#C8E6C9</color>
+
+    <!-- Leaderboard Screen -->
+    <color name="leaderboard_coming_soon_background">#EDE7F6</color>
+    <color name="leaderboard_coming_soon_border">#D1C4E9</color>
+    <color name="gold_border">#FFD700</color>
+    <color name="silver_border">#C0C0C0</color>
+    <color name="bronze_border">#CD7F32</color>
+
+    <!-- Profile Screen -->
+    <color name="active_member_background">@color/status_resolved_background</color>
+    <color name="active_member_text">@color/status_resolved_text</color>
+    <color name="logout_button_background">#D32F2F</color>
+    <color name="edit_profile_border">#BDBDBD</color>
+
+    <!-- Leaderboard Screen -->
+    <color name="leaderboard_coming_soon_bg">#EDE7F6</color>
+    <color name="leaderboard_gold_bg">#FFFDE7</color>
+    <color name="leaderboard_gold_stroke">#FFD700</color>
+    <color name="leaderboard_silver_bg">#F5F5F5</color>
+    <color name="leaderboard_silver_stroke">#C0C0C0</color>
+    <color name="leaderboard_bronze_bg">#FFF3E0</color>
+    <color name="leaderboard_bronze_stroke">#CD7F32</color>
+
+    <!-- Profile Screen -->
+    <color name="logout_button_bg">#D32F2F</color>
+    <color name="profile_stat_number">#3F51B5</color>
+    <color name="profile_active_member_bg">#E8F5E9</color>
+    <color name="profile_active_member_text">#388E3C</color>
+
+    <color name="guest_button_stroke">#E0E0E0</color> <!-- A light grey for the button border -->
+
+
+    <!-- Splash Screen Gradient -->
+    <color name="splash_gradient_start">#4A55E1</color>
+    <color name="splash_gradient_end">#3949AB</color>
+
+    <!-- Login Screen -->
+    <color name="login_button_disabled">#CCCCCC</color>
+    <color name="login_button_enabled">#4A55E1</color>
+    <color name="input_field_stroke">#E0E0E0</color>
+
+    <!-- Home Screen & Issue Cards -->
+    <color name="upvote_bg">#EEEEEE</color>
+
+    <!-- My Reports Screen Banners -->
+    <color name="banner_inprogress_bg">#FFFDE7</color>
+    <color name="banner_inprogress_stroke">#FFEE58</color>
+    <color name="banner_resolved_bg">#E8F5E9</color>
+    <color name="banner_resolved_stroke">#81C784</color>
+
+
+
 </resources>
 

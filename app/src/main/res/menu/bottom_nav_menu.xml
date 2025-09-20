@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home"
+        android:title="@string/nav_home" />
+    <item
+        android:id="@+id/navigation_reports"
+        android:icon="@drawable/ic_reports"
+        android:title="@string/nav_my_reports" />
+    <!-- A placeholder item for the central FAB. It has no title or icon. -->
+    <item
+        android:id="@+id/navigation_placeholder"
+        android:title=""
+        android:enabled="false"/>
+    <item
+        android:id="@+id/navigation_leaderboard"
+        android:icon="@drawable/ic_leaderboard"
+        android:title="@string/nav_leaderboard" />
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/ic_profile"
+        android:title="@string/nav_profile" />
+</menu>
+

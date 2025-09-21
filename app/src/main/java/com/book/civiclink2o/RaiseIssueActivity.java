@@ -2,12 +2,13 @@ package com.book.civiclink2o;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText; // THE FIX: Import EditText
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -26,13 +27,10 @@ public class RaiseIssueActivity extends AppCompatActivity {
     private ImageView issueImageView, gpsButton;
     private MaterialButton takePhotoButton, galleryButton;
     private AutoCompleteTextView categoryAutoCompleteTextView;
-    private TextView locationTextView;
+    private EditText locationEditText; // THE FIX: Changed from TextView to EditText
 
-    // Launcher for requesting location permissions
     private ActivityResultLauncher<String[]> locationPermissionLauncher;
-    // Client for getting the device's location
     private FusedLocationProviderClient fusedLocationClient;
-    private boolean isLocationPermissionGranted = false;
 
     private ActivityResultLauncher<Void> takePictureLauncher;
     private ActivityResultLauncher<String> getContentLauncher;
@@ -49,31 +47,26 @@ public class RaiseIssueActivity extends AppCompatActivity {
         takePhotoButton = findViewById(R.id.takePhotoButton);
         galleryButton = findViewById(R.id.galleryButton);
         categoryAutoCompleteTextView = findViewById(R.id.categoryAutoCompleteTextView);
-        locationTextView = findViewById(R.id.locationTextView);
+        locationEditText = findViewById(R.id.locationEditText); // THE FIX: Find the new EditText
         gpsButton = findViewById(R.id.gpsButton);
 
-        // Initialize the location client
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         // Initialize the location permission launcher
         locationPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), permissions -> {
             if (Boolean.TRUE.equals(permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false)) ||
                     Boolean.TRUE.equals(permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false))) {
-                isLocationPermissionGranted = true;
                 fetchLocation();
             } else {
-                isLocationPermissionGranted = false;
-                Toast.makeText(this, "Location permission is required to fetch address", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
             }
         });
-
 
         // Setup for dropdown
         String[] categories = getResources().getStringArray(R.array.issue_categories);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, categories);
         categoryAutoCompleteTextView.setAdapter(adapter);
 
-        // Setup for camera/gallery
         setupCameraAndGalleryLaunchers();
         setupButtonClickListeners();
 
@@ -107,48 +100,33 @@ public class RaiseIssueActivity extends AppCompatActivity {
         gpsButton.setOnClickListener(v -> requestLocationPermission());
     }
 
-    /**
-     * Checks for location permissions and requests them if not already granted.
-     */
     private void requestLocationPermission() {
         boolean hasFineLocation = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
         boolean hasCoarseLocation = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
 
-        isLocationPermissionGranted = hasFineLocation || hasCoarseLocation;
-
-        if (!isLocationPermissionGranted) {
+        if (!hasFineLocation && !hasCoarseLocation) {
             locationPermissionLauncher.launch(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION});
         } else {
             fetchLocation();
         }
     }
 
-    /**
-     * Fetches the last known location of the device and displays the coordinates.
-     */
     private void fetchLocation() {
-        // Double-check permission before proceeding (this is required by Android)
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // This check is mainly for the IDE; the logic in requestLocationPermission() should prevent this from being called without permission.
             return;
         }
 
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, location -> {
                     if (location != null) {
-                        // --- THIS IS THE FIX ---
-                        // We got the location. Now format the coordinates into a string.
                         double latitude = location.getLatitude();
                         double longitude = location.getLongitude();
-                        // Format to 5 decimal places for good precision
                         String coordinates = String.format(Locale.getDefault(), "Lat: %.5f, Lon: %.5f", latitude, longitude);
 
-                        // Update the TextView
-                        locationTextView.setText(coordinates);
-                        locationTextView.setTextColor(ContextCompat.getColor(this, R.color.text_primary));
-                        // --- END OF FIX ---
+                        // THE FIX: Set the text on the EditText
+                        locationEditText.setText(coordinates);
+
                     } else {
-                        locationTextView.setText("Could not get location. Try again.");
                         Toast.makeText(this, "Unable to fetch location. Please ensure GPS is on.", Toast.LENGTH_LONG).show();
                     }
                 });

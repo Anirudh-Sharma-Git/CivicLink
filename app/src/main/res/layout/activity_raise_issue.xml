@@ -214,18 +214,24 @@
                         android:background="@drawable/input_field_background"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:padding="12dp">
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp">
 
-                        <!-- THE FIX: Added an ID to the TextView -->
-                        <TextView
-                            android:id="@+id/locationTextView"
+                        <!-- THE FIX: Replaced the TextView with an EditText -->
+                        <EditText
+                            android:id="@+id/locationEditText"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/location_hint"
-                            android:textColor="@color/text_secondary" />
+                            android:background="@null"
+                            android:hint="@string/location_hint"
+                            android:inputType="text"
+                            android:paddingTop="12dp"
+                            android:paddingBottom="12dp"
+                            android:textColor="@color/text_primary"
+                            android:textColorHint="@color/text_secondary"
+                            android:textSize="14sp" />
 
-                        <!-- THE FIX: Added an ID to the ImageView to make it clickable -->
                         <ImageView
                             android:id="@+id/gpsButton"
                             android:layout_width="24dp"

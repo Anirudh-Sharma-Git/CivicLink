@@ -2,6 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Location Permissions -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- Camera Permission -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,7 +24,11 @@
         android:theme="@style/Theme.CivicLink2O"
         tools:targetApi="31">
 
-        <!-- Activity 1: The Splash Screen (Launcher) -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="YOUR_API_KEY_HERE" />
+
+        <!-- Activity Declarations -->
         <activity
             android:name=".SplashActivity"
             android:exported="true"
@@ -23,23 +38,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- Activity 2: The Language Selection Screen -->
         <activity
             android:name=".LanguageSelectionActivity"
             android:exported="false" />
-
-        <!-- Activity 3: The Login Screen -->
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
-
-        <!-- Activity 4: The Main Home Screen -->
         <activity
             android:name=".HomeActivity"
             android:exported="false" />
-
-        <!-- Activity 5: The Raise Issue Screen -->
         <activity
             android:name=".RaiseIssueActivity"
             android:exported="false" />

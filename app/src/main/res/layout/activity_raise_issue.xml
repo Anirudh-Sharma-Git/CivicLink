@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- THE FIX: The root is now a CoordinatorLayout -->
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,19 +8,17 @@
     android:fitsSystemWindows="true"
     tools:context=".RaiseIssueActivity">
 
-    <!-- THE FIX: The title is now in an AppBarLayout, making it the fixed header -->
+    <!-- AppBarLayout for the fixed header -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/app_background"
         app:elevation="0dp">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -29,7 +26,6 @@
                 android:textColor="@color/text_primary"
                 android:textSize="24sp"
                 android:textStyle="bold" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -39,12 +35,11 @@
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- THE FIX: The form is now in a NestedScrollView that scrolls under the header -->
+    <!-- Scrollable content -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,13 +52,11 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -71,27 +64,16 @@
                         android:textColor="@color/text_primary"
                         android:textStyle="bold" />
 
-                    <LinearLayout
+                    <!-- THE FIX: Added ID to the ImageView -->
+                    <ImageView
+                        android:id="@+id/issueImageView"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="150dp"
                         android:layout_marginTop="12dp"
                         android:background="@drawable/bg_dotted_border"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="24dp">
-
-                        <ImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:src="@drawable/ic_camera" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="@string/upload_photo_hint"
-                            android:textColor="@color/text_secondary" />
-                    </LinearLayout>
+                        android:padding="24dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_camera" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -99,7 +81,9 @@
                         android:layout_marginTop="12dp"
                         android:orientation="horizontal">
 
+                        <!-- THE FIX: Added ID to the button -->
                         <com.google.android.material.button.MaterialButton
+                            android:id="@+id/takePhotoButton"
                             style="?attr/materialButtonOutlinedStyle"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -110,12 +94,13 @@
                             app:icon="@drawable/ic_camera"
                             app:iconTint="@color/text_secondary"
                             app:strokeColor="@color/guest_button_stroke" />
-
                         <View
                             android:layout_width="12dp"
                             android:layout_height="0dp" />
 
+                        <!-- THE FIX: Added ID to the button -->
                         <com.google.android.material.button.MaterialButton
+                            android:id="@+id/galleryButton"
                             style="?attr/materialButtonOutlinedStyle"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -130,27 +115,24 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Category Card -->
+            <!-- (The rest of the cards remain the same) -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/category_title"
                         android:textColor="@color/text_primary"
                         android:textStyle="bold" />
-
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -160,31 +142,25 @@
                         android:padding="12dp"
                         android:text="@string/category_hint"
                         android:textColor="@color/text_secondary" />
-
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
-            <!-- Description Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/description_title"
                         android:textColor="@color/text_primary"
                         android:textStyle="bold" />
-
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="120dp"
@@ -197,28 +173,23 @@
                         android:textColorHint="@color/text_secondary" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
-            <!-- Location Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/location_title"
                         android:textColor="@color/text_primary"
                         android:textStyle="bold" />
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -227,14 +198,12 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
                         android:padding="12dp">
-
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/location_hint"
                             android:textColor="@color/text_secondary" />
-
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
@@ -243,8 +212,6 @@
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
-            <!-- Submit Button -->
             <com.google.android.material.button.MaterialButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

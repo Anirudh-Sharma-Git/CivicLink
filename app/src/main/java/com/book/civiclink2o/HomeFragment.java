@@ -5,17 +5,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment implements View.OnClickListener {
+public class HomeFragment extends Fragment implements View.OnClickListener, OnMapReadyCallback {
 
     private List<TextView> filterChips;
-    // References to our card containers
     private View cardPothole, cardGarbage, cardStreetLight, cardPothole2;
+    private GoogleMap googleMap;
 
     @Nullable
     @Override
@@ -27,7 +37,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // --- Setup for Filter Chips (same as before) ---
+        // Setup filter chips
         filterChips = new ArrayList<>();
         TextView chipAll = view.findViewById(R.id.chip_all);
         TextView chipPending = view.findViewById(R.id.chip_pending);
@@ -43,51 +53,63 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             chip.setOnClickListener(this);
         }
 
-        // --- THIS IS NEW: Find the card containers by their IDs ---
+        // Find cards
         cardPothole = view.findViewById(R.id.card_pothole);
         cardGarbage = view.findViewById(R.id.card_garbage);
         cardStreetLight = view.findViewById(R.id.card_street_light);
         cardPothole2 = view.findViewById(R.id.card_pothole_2);
 
-
-        // Set the "All" chip as selected by default when the screen loads
+        // Default selection
         chipAll.setSelected(true);
+
+        // Setup Map
+        FragmentManager fm = getChildFragmentManager();
+        SupportMapFragment mapFragment = (SupportMapFragment) fm.findFragmentById(R.id.map_container);
+        if (mapFragment == null) {
+            mapFragment = SupportMapFragment.newInstance();
+            fm.beginTransaction().replace(R.id.map_container, mapFragment).commit();
+        }
+        mapFragment.getMapAsync(this);
     }
 
     @Override
     public void onClick(View clickedView) {
-        // This part handles updating the visual style of the clicked chip
+        // Update chip selection state
         for (TextView chip : filterChips) {
             chip.setSelected(chip == clickedView);
         }
 
-        // --- THIS IS THE NEW FILTERING LOGIC ---
-        // This part shows/hides the cards based on which chip was clicked
         int id = clickedView.getId();
         if (id == R.id.chip_all) {
-            // Show all cards
             cardPothole.setVisibility(View.VISIBLE);
             cardGarbage.setVisibility(View.VISIBLE);
             cardStreetLight.setVisibility(View.VISIBLE);
             cardPothole2.setVisibility(View.VISIBLE);
         } else if (id == R.id.chip_pending) {
-            // Show only 'Pending' cards (our sample Pothole cards)
             cardPothole.setVisibility(View.VISIBLE);
             cardPothole2.setVisibility(View.VISIBLE);
             cardGarbage.setVisibility(View.GONE);
             cardStreetLight.setVisibility(View.GONE);
         } else if (id == R.id.chip_in_progress) {
-            // Show only 'In Progress' cards (our sample Garbage card)
             cardPothole.setVisibility(View.GONE);
             cardGarbage.setVisibility(View.VISIBLE);
             cardStreetLight.setVisibility(View.GONE);
             cardPothole2.setVisibility(View.GONE);
         } else if (id == R.id.chip_resolved) {
-            // Show only 'Resolved' cards (our sample Street Light card)
             cardPothole.setVisibility(View.GONE);
             cardGarbage.setVisibility(View.GONE);
             cardStreetLight.setVisibility(View.VISIBLE);
             cardPothole2.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap map) {
+        googleMap = map;
+
+        // Example marker: Navi Mumbai
+        LatLng nmims = new LatLng(19.0330, 73.0297);
+        googleMap.addMarker(new MarkerOptions().position(nmims).title("NMIMS Navi Mumbai"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(nmims, 14));
     }
 }

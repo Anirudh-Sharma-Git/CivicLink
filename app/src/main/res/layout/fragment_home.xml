@@ -8,7 +8,6 @@
     android:background="@color/app_background"
     tools:context=".HomeFragment">
 
-    <!-- The AppBarLayout now contains the search bar, filters, AND the map -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
@@ -22,7 +21,7 @@
             android:orientation="vertical"
             android:paddingTop="16dp">
 
-            <!-- Search Bar (with horizontal padding) -->
+            <!-- Search Bar -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -52,7 +51,7 @@
                     android:textSize="16sp" />
             </LinearLayout>
 
-            <!-- Filter Chips (with horizontal padding) -->
+            <!-- Filter Chips -->
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -65,9 +64,8 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                       android:orientation="horizontal">
+                    android:orientation="horizontal">
 
-                    <!-- THIS IS CORRECTION #1: All chips now use the selectors for their background and text color -->
                     <TextView
                         android:id="@+id/chip_all"
                         style="@style/ChipStyle"
@@ -109,39 +107,16 @@
                 </LinearLayout>
             </HorizontalScrollView>
 
-            <!-- Interactive Map Placeholder -->
-            <LinearLayout
+            <!-- Interactive Google Map -->
+            <FrameLayout
+                android:id="@+id/map_container"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:background="@drawable/bg_search_bar"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:background="@drawable/bg_search_bar" />
 
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/ic_map_pin" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/interactive_map"
-                    android:textColor="@color/text_primary"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/issues_shown_as_markers"
-                    android:textColor="@color/text_secondary" />
-            </LinearLayout>
-
-            <!-- A small space at the bottom of the app bar -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="16dp"/>
@@ -149,7 +124,7 @@
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Main Scrollable Content -->
+    <!-- Scrollable Cards -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -163,7 +138,6 @@
             android:paddingEnd="16dp"
             android:paddingBottom="100dp">
 
-            <!-- THIS IS CORRECTION #2: Each card is now wrapped in a FrameLayout with a unique ID -->
             <FrameLayout
                 android:id="@+id/card_pothole"
                 android:layout_width="match_parent"

@@ -8,11 +8,13 @@
         android:id="@+id/navigation_reports"
         android:icon="@drawable/ic_reports"
         android:title="@string/nav_my_reports" />
-    <!-- A placeholder item for the central FAB. It has no title or icon. -->
+    <!-- A placeholder item for the central FAB -->
     <item
         android:id="@+id/navigation_placeholder"
+        android:icon="@drawable/transparent_icon"
         android:title=""
-        android:enabled="false"/>
+        android:enabled="false"
+        android:checkable="false"/>
     <item
         android:id="@+id/navigation_leaderboard"
         android:icon="@drawable/ic_leaderboard"
@@ -22,4 +24,3 @@
         android:icon="@drawable/ic_profile"
         android:title="@string/nav_profile" />
 </menu>
-

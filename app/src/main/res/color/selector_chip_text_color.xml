@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- The color to use when the view's state is "selected" -->
+    <item android:color="@color/white" android:state_selected="true" />
+    <!-- The default color to use for all other states -->
+    <item android:color="@color/chip_unselected_text" />
+</selector>

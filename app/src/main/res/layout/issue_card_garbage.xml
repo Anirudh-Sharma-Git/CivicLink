@@ -98,10 +98,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/garbage_distance">
 
+            <!-- FIX: Set a specific, smaller size for the icon -->
+            <!-- THE FIX: Using app:srcCompat for the vector drawable -->
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:src="@drawable/ic_arrow_up" />
+                app:srcCompat="@drawable/ic_arrow_up" />
 
             <TextView
                 android:layout_width="wrap_content"

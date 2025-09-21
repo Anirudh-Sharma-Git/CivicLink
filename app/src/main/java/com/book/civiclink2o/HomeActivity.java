@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -16,6 +17,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
     private FloatingActionButton fab;
+    private BottomAppBar bottomAppBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +27,13 @@ public class HomeActivity extends AppCompatActivity {
         // Find the views from our layout file
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         fab = findViewById(R.id.fab);
+        bottomAppBar = findViewById(R.id.bottomAppBar); // Add this line
 
         // This prevents the placeholder item in the middle from being clickable
         bottomNavigationView.getMenu().findItem(R.id.navigation_placeholder).setEnabled(false);
+
+        // Ensure FAB is centered programmatically
+        bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
 
         // Load the default fragment (HomeFragment) when the app starts
         if (savedInstanceState == null) {
@@ -38,6 +44,11 @@ public class HomeActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             Fragment selectedFragment = null;
             int itemId = item.getItemId();
+
+            // Handle navigation item selection - ignore placeholder clicks
+            if (itemId == R.id.navigation_placeholder) {
+                return false; // Ignore clicks on the placeholder
+            }
 
             // A switch statement is a clean way to handle multiple menu items
             if (itemId == R.id.navigation_home) {
@@ -61,11 +72,8 @@ public class HomeActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // --- THIS IS THE FIX ---
-                // The following two lines have been uncommented to make the button work.
                 Intent intent = new Intent(HomeActivity.this, RaiseIssueActivity.class);
                 startActivity(intent);
-                // --- END OF FIX ---
             }
         });
     }
@@ -81,4 +89,3 @@ public class HomeActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 }
-

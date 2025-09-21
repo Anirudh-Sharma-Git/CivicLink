@@ -239,4 +239,15 @@
     <string name="about_app_title">About App</string>
     <string name="help_and_support">Help &amp; Support</string>
 
+    <!-- THE FIX: Add this array for the category dropdown options -->
+    <string-array name="issue_categories">
+        <item>Garbage Management</item>
+        <item>Pothole/Road</item>
+        <item>Street Light</item>
+        <item>Water Supply</item>
+        <item>Electricity</item>
+        <item>Drainage</item>
+        <item>Other</item>
+    </string-array>
+
 </resources>

@@ -64,7 +64,6 @@
                         android:textColor="@color/text_primary"
                         android:textStyle="bold" />
 
-                    <!-- THE FIX: Added ID to the ImageView -->
                     <ImageView
                         android:id="@+id/issueImageView"
                         android:layout_width="match_parent"
@@ -81,7 +80,6 @@
                         android:layout_marginTop="12dp"
                         android:orientation="horizontal">
 
-                        <!-- THE FIX: Added ID to the button -->
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/takePhotoButton"
                             style="?attr/materialButtonOutlinedStyle"
@@ -98,7 +96,6 @@
                             android:layout_width="12dp"
                             android:layout_height="0dp" />
 
-                        <!-- THE FIX: Added ID to the button -->
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/galleryButton"
                             style="?attr/materialButtonOutlinedStyle"
@@ -115,35 +112,50 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- (The rest of the cards remain the same) -->
+            <!-- Category Card -->
+            <!-- THIS ENTIRE CARDVIEW IS THE UPDATED SECTION -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/category_title"
                         android:textColor="@color/text_primary"
                         android:textStyle="bold" />
-                    <TextView
+
+                    <!-- Using TextInputLayout and AutoCompleteTextView for the dropdown -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:background="@drawable/bg_dropdown"
-                        android:drawableEnd="@drawable/ic_dropdown_arrow"
-                        android:padding="12dp"
-                        android:text="@string/category_hint"
-                        android:textColor="@color/text_secondary" />
+                        android:hint="@string/category_hint">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/categoryAutoCompleteTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            tools:ignore="LabelFor" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
+
+            <!-- Description Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -173,23 +185,28 @@
                         android:textColorHint="@color/text_secondary" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
+            <!-- Location Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/location_title"
                         android:textColor="@color/text_primary"
                         android:textStyle="bold" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -198,13 +215,19 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
                         android:padding="12dp">
+
+                        <!-- THE FIX: Added an ID to the TextView -->
                         <TextView
+                            android:id="@+id/locationTextView"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/location_hint"
                             android:textColor="@color/text_secondary" />
+
+                        <!-- THE FIX: Added an ID to the ImageView to make it clickable -->
                         <ImageView
+                            android:id="@+id/gpsButton"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_gps"

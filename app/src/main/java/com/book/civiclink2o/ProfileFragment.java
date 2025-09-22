@@ -5,12 +5,20 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView; // Make sure this is imported
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import com.google.android.material.button.MaterialButton;
 
 public class ProfileFragment extends Fragment {
+
+    // --- THIS IS NEW: Add references for the views we need to update ---
+    private TextView profileName;
+    private TextView profileInitial;
+    private SessionManager sessionManager;
 
     @Nullable
     @Override
@@ -25,28 +33,43 @@ public class ProfileFragment extends Fragment {
 
         // --- THIS IS THE NEW LOGIC ---
 
-        // Find the logout button by its new ID
+        // 1. Initialize our SessionManager
+        sessionManager = new SessionManager(getContext());
+
+        // 2. Find the TextViews from the layout by their IDs
+        profileName = view.findViewById(R.id.profile_name);
+        profileInitial = view.findViewById(R.id.profile_initial);
+
+        // 3. Check if a user is actually logged in
+        if (sessionManager.isLoggedIn()) {
+            // If they are, get their name from the session "memory"
+            String userName = sessionManager.getUserName();
+
+            // Update the main name TextView
+            profileName.setText(userName);
+
+            // Update the initial in the circle
+            if (userName != null && !userName.isEmpty()) {
+                profileInitial.setText(String.valueOf(userName.charAt(0)));
+            }
+        }
+        // If no one is logged in, the layout will just show the default "Guest User" text.
+
+        // --- END OF NEW LOGIC ---
+
+
+        // This is the logout button logic we already built
         MaterialButton logoutButton = view.findViewById(R.id.logoutButton);
-
-        // Set a click listener on the button
         logoutButton.setOnClickListener(v -> {
-            // Create an Intent to open the LoginActivity
+            // --- THIS IS A SMALL FIX: We need to clear the session on logout ---
+            sessionManager.logoutUser(); // This clears the app's "memory"
+
             Intent intent = new Intent(getActivity(), LoginActivity.class);
-
-            // These flags are very important for a logout flow.
-            // They clear the entire "back stack" of activities, so the user can't
-            // press the back button to get back into the app after logging out.
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-            // Start the LoginActivity
             startActivity(intent);
-
-            // Finish the current activity (HomeActivity)
             if (getActivity() != null) {
                 getActivity().finish();
             }
         });
-
-        // --- END OF NEW LOGIC ---
     }
 }

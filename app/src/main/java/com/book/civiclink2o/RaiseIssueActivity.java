@@ -5,9 +5,10 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText; // THE FIX: Import EditText
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -22,59 +23,74 @@ import com.google.android.material.button.MaterialButton;
 
 import java.util.Locale;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class RaiseIssueActivity extends AppCompatActivity {
 
+    // UI Elements
     private ImageView issueImageView, gpsButton;
-    private MaterialButton takePhotoButton, galleryButton;
+    private MaterialButton takePhotoButton, galleryButton, submitButton;
     private AutoCompleteTextView categoryAutoCompleteTextView;
-    private EditText locationEditText; // THE FIX: Changed from TextView to EditText
+    private EditText descriptionEditText, locationEditText;
 
-    private ActivityResultLauncher<String[]> locationPermissionLauncher;
-    private FusedLocationProviderClient fusedLocationClient;
+    // API and Session Management
+    private ApiService apiService;
+    private SessionManager sessionManager;
 
+    // Location Services
+    private FusedLocationProviderClient fusedLocationClient; // This was declared...
+    private Location lastKnownLocation;
+
+    // Activity Result Launchers
     private ActivityResultLauncher<Void> takePictureLauncher;
     private ActivityResultLauncher<String> getContentLauncher;
     private ActivityResultLauncher<String> requestCameraPermissionLauncher;
-
+    private ActivityResultLauncher<String[]> locationPermissionLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_raise_issue);
 
-        // Find views
-        issueImageView = findViewById(R.id.issueImageView);
-        takePhotoButton = findViewById(R.id.takePhotoButton);
-        galleryButton = findViewById(R.id.galleryButton);
-        categoryAutoCompleteTextView = findViewById(R.id.categoryAutoCompleteTextView);
-        locationEditText = findViewById(R.id.locationEditText); // THE FIX: Find the new EditText
-        gpsButton = findViewById(R.id.gpsButton);
+        sessionManager = new SessionManager(getApplicationContext());
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:3000")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        apiService = retrofit.create(ApiService.class);
 
+        // --- THIS IS THE FIX ---
+        // We must initialize the location client here, before we ever try to use it.
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        // --- END OF FIX ---
 
-        // Initialize the location permission launcher
-        locationPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), permissions -> {
-            if (Boolean.TRUE.equals(permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false)) ||
-                    Boolean.TRUE.equals(permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false))) {
-                fetchLocation();
-            } else {
-                Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
-            }
-        });
+        initializeViews();
+        setupLaunchers();
+        setupButtonClickListeners();
 
-        // Setup for dropdown
         String[] categories = getResources().getStringArray(R.array.issue_categories);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, categories);
         categoryAutoCompleteTextView.setAdapter(adapter);
 
-        setupCameraAndGalleryLaunchers();
-        setupButtonClickListeners();
-
-        // Automatically try to fetch location when the screen opens
         requestLocationPermission();
     }
 
-    private void setupCameraAndGalleryLaunchers() {
+    private void initializeViews() {
+        issueImageView = findViewById(R.id.issueImageView);
+        takePhotoButton = findViewById(R.id.takePhotoButton);
+        galleryButton = findViewById(R.id.galleryButton);
+        categoryAutoCompleteTextView = findViewById(R.id.categoryAutoCompleteTextView);
+        descriptionEditText = findViewById(R.id.descriptionEditText);
+        locationEditText = findViewById(R.id.locationEditText);
+        gpsButton = findViewById(R.id.gpsButton);
+        submitButton = findViewById(R.id.submitButton);
+    }
+
+    private void setupLaunchers() {
         takePictureLauncher = registerForActivityResult(new ActivityResultContracts.TakePicturePreview(), result -> {
             if (result != null) { issueImageView.setImageBitmap(result); }
         });
@@ -84,6 +100,13 @@ public class RaiseIssueActivity extends AppCompatActivity {
         requestCameraPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
             if (isGranted) { takePictureLauncher.launch(null); } else {
                 Toast.makeText(this, "Camera permission is required", Toast.LENGTH_SHORT).show();
+            }
+        });
+        locationPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), permissions -> {
+            if (Boolean.TRUE.equals(permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false))) {
+                fetchLocation();
+            } else {
+                Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -98,13 +121,55 @@ public class RaiseIssueActivity extends AppCompatActivity {
         });
         galleryButton.setOnClickListener(v -> getContentLauncher.launch("image/*"));
         gpsButton.setOnClickListener(v -> requestLocationPermission());
+        submitButton.setOnClickListener(v -> handleSubmitIssue());
+    }
+
+    private void handleSubmitIssue() {
+        String category = categoryAutoCompleteTextView.getText().toString();
+        String description = descriptionEditText.getText().toString().trim();
+        int userId = sessionManager.getUserId();
+
+        if (category.isEmpty() || description.isEmpty()) {
+            Toast.makeText(this, "Please fill category and description.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (lastKnownLocation == null) {
+            Toast.makeText(this, "Location not available. Please try fetching it again.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (userId == -1) {
+            Toast.makeText(this, "Error: You are not logged in.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        IssueRequest issueRequest = new IssueRequest(
+                category,
+                description,
+                lastKnownLocation.getLatitude(),
+                lastKnownLocation.getLongitude(),
+                userId
+        );
+
+        apiService.createIssue(issueRequest).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(RaiseIssueActivity.this, "Issue submitted successfully!", Toast.LENGTH_LONG).show();
+                    finish();
+                } else {
+                    Toast.makeText(RaiseIssueActivity.this, "Failed to submit issue. Please try again.", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(RaiseIssueActivity.this, "Network Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void requestLocationPermission() {
-        boolean hasFineLocation = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-        boolean hasCoarseLocation = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-
-        if (!hasFineLocation && !hasCoarseLocation) {
+        boolean hasPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        if (!hasPermission) {
             locationPermissionLauncher.launch(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION});
         } else {
             fetchLocation();
@@ -112,20 +177,14 @@ public class RaiseIssueActivity extends AppCompatActivity {
     }
 
     private void fetchLocation() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) { return; }
 
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, location -> {
                     if (location != null) {
-                        double latitude = location.getLatitude();
-                        double longitude = location.getLongitude();
-                        String coordinates = String.format(Locale.getDefault(), "Lat: %.5f, Lon: %.5f", latitude, longitude);
-
-                        // THE FIX: Set the text on the EditText
+                        lastKnownLocation = location;
+                        String coordinates = String.format(Locale.getDefault(), "Lat: %.5f, Lon: %.5f", location.getLatitude(), location.getLongitude());
                         locationEditText.setText(coordinates);
-
                     } else {
                         Toast.makeText(this, "Unable to fetch location. Please ensure GPS is on.", Toast.LENGTH_LONG).show();
                     }

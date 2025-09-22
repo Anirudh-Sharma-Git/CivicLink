@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- By making ScrollView the root, it handles system windows and scrolling correctly. -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,10 +9,10 @@
     android:fitsSystemWindows="true"
     tools:context=".LoginActivity">
 
-    <!-- The ConstraintLayout now sits inside the ScrollView -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="16dp">
 
         <!-- Top Icon -->
         <ImageView
@@ -111,10 +110,12 @@
                     <EditText
                         android:id="@+id/phoneLoginNumber"
                         style="@style/InputField"
+                        android:autofillHints="phone"
                         android:hint="@string/phone_hint"
                         android:inputType="phone" />
 
-                    <Button
+                    <!-- THE FIX: Changed Button to MaterialButton -->
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/sendOtpButton"
                         style="@style/PrimaryButton"
                         android:layout_marginTop="20dp"
@@ -137,6 +138,7 @@
                     <EditText
                         android:id="@+id/emailLoginEmail"
                         style="@style/InputField"
+                        android:autofillHints="emailAddress"
                         android:hint="@string/email_hint"
                         android:inputType="textEmailAddress" />
 
@@ -148,10 +150,12 @@
                     <EditText
                         android:id="@+id/emailLoginPassword"
                         style="@style/InputField"
+                        android:autofillHints="password"
                         android:hint="@string/password_hint"
                         android:inputType="textPassword" />
 
-                    <Button
+                    <!-- THE FIX: Changed Button to MaterialButton -->
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/loginButton"
                         style="@style/PrimaryButton"
                         android:layout_marginTop="20dp"
@@ -174,6 +178,7 @@
                     <EditText
                         android:id="@+id/phoneSignUpName"
                         style="@style/InputField"
+                        android:autofillHints="name"
                         android:hint="@string/name_hint"
                         android:inputType="textPersonName" />
 
@@ -185,10 +190,12 @@
                     <EditText
                         android:id="@+id/phoneSignUpNumber"
                         style="@style/InputField"
+                        android:autofillHints="phone"
                         android:hint="@string/phone_hint"
                         android:inputType="phone" />
 
-                    <Button
+                    <!-- THE FIX: Changed Button to MaterialButton -->
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/phoneSignUpButton"
                         style="@style/PrimaryButton"
                         android:layout_marginTop="20dp"
@@ -211,6 +218,7 @@
                     <EditText
                         android:id="@+id/emailSignUpName"
                         style="@style/InputField"
+                        android:autofillHints="name"
                         android:hint="@string/name_hint"
                         android:inputType="textPersonName" />
 
@@ -222,6 +230,7 @@
                     <EditText
                         android:id="@+id/emailSignUpEmail"
                         style="@style/InputField"
+                        android:autofillHints="emailAddress"
                         android:hint="@string/email_hint"
                         android:inputType="textEmailAddress" />
 
@@ -233,10 +242,9 @@
                     <EditText
                         android:id="@+id/emailSignUpPassword"
                         style="@style/InputField"
+                        android:autofillHints="password"
                         android:hint="@string/password_hint"
                         android:inputType="textPassword" />
-
-
 
                     <TextView
                         style="@style/InputLabel"
@@ -246,10 +254,12 @@
                     <EditText
                         android:id="@+id/emailSignUpConfirmPassword"
                         style="@style/InputField"
+                        android:autofillHints="password"
                         android:hint="@string/confirm_password_hint"
                         android:inputType="textPassword" />
 
-                    <Button
+                    <!-- THE FIX: Changed Button to MaterialButton -->
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/emailSignUpButton"
                         style="@style/PrimaryButton"
                         android:layout_marginTop="20dp"
@@ -272,26 +282,22 @@
         </androidx.cardview.widget.CardView>
 
         <!-- Continue as Guest Button -->
-        <Button
+        <!-- THE FIX: Changed Button to MaterialButton -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/guestButton"
-            style="@style/Widget.AppCompat.Button.Borderless"
+            style="?attr/materialButtonOutlinedStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="24dp"
-            android:background="@drawable/guest_button_background"
             android:text="@string/continue_as_guest"
             android:textAllCaps="false"
             android:textColor="@color/text_secondary"
+            app:strokeColor="@color/guest_button_stroke"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/mainCard"
-
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="32dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.0"/>
+            app:layout_constraintTop_toBottomOf="@id/mainCard" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
-

@@ -8,6 +8,7 @@
     android:background="@color/app_background"
     tools:context=".HomeFragment">
 
+    <!-- The AppBarLayout contains everything that should be part of the fixed/collapsing header -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
@@ -32,12 +33,10 @@
                 android:layout_marginEnd="16dp"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp">
-
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_search" />
-
                 <EditText
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -48,7 +47,8 @@
                     android:padding="12dp"
                     android:textColor="@color/text_primary"
                     android:textColorHint="@color/text_secondary"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:importantForAutofill="no" />
             </LinearLayout>
 
             <!-- Filter Chips -->
@@ -60,12 +60,10 @@
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 android:scrollbars="none">
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-
                     <TextView
                         android:id="@+id/chip_all"
                         style="@style/ChipStyle"
@@ -74,7 +72,6 @@
                         android:background="@drawable/selector_chip_background"
                         android:text="@string/filter_all"
                         android:textColor="@color/selector_chip_text_color" />
-
                     <TextView
                         android:id="@+id/chip_pending"
                         style="@style/ChipStyle"
@@ -84,7 +81,6 @@
                         android:background="@drawable/selector_chip_background"
                         android:text="@string/filter_pending"
                         android:textColor="@color/selector_chip_text_color" />
-
                     <TextView
                         android:id="@+id/chip_in_progress"
                         style="@style/ChipStyle"
@@ -94,7 +90,6 @@
                         android:background="@drawable/selector_chip_background"
                         android:text="@string/filter_in_progress"
                         android:textColor="@color/selector_chip_text_color" />
-
                     <TextView
                         android:id="@+id/chip_resolved"
                         style="@style/ChipStyle"
@@ -107,15 +102,21 @@
                 </LinearLayout>
             </HorizontalScrollView>
 
-            <!-- Interactive Google Map -->
-            <FrameLayout
-                android:id="@+id/map_container"
+            <!-- The Interactive Google Map -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:background="@drawable/bg_search_bar" />
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+                <fragment
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </androidx.cardview.widget.CardView>
 
             <View
                 android:layout_width="match_parent"
@@ -124,49 +125,17 @@
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Scrollable Cards -->
-    <androidx.core.widget.NestedScrollView
+    <!-- The dynamic list of issue cards that scrolls under the header -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/issuesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="100dp">
-
-            <FrameLayout
-                android:id="@+id/card_pothole"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <include layout="@layout/issue_card_pothole" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:id="@+id/card_garbage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <include layout="@layout/issue_card_garbage" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:id="@+id/card_street_light"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <include layout="@layout/issue_card_street_light" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:id="@+id/card_pothole_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <include layout="@layout/issue_card_pothole" />
-            </FrameLayout>
-
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+        android:clipToPadding="false"
+        android:paddingTop="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="100dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:listitem="@layout/issue_card_item" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

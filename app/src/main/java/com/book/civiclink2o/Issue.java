@@ -1,9 +1,11 @@
 package com.book.civiclink2o;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
-// This is the "data package" for an issue we RECEIVE from the server.
-public class Issue {
+// THE FIX: This class is now "Parcelable" (shippable between activities)
+public class Issue implements Parcelable {
 
     private int id;
     private String category;
@@ -12,13 +14,59 @@ public class Issue {
     private int upvotes;
     private String createdAt;
 
-    // This annotation tells our networking library (Gson) that when it sees
-    // a field named "reportedByName" in the server's response, it should put
-    // that value into our "reportedByName" variable here.
+    // THE FIX: Added the missing location fields
+    private double latitude;
+    private double longitude;
+
     @SerializedName("reportedByName")
     private String reportedByName;
 
-    // Getters - These are methods that allow other parts of our app to safely read the data
+    // --- Start of Parcelable Implementation ---
+    protected Issue(Parcel in) {
+        id = in.readInt();
+        category = in.readString();
+        description = in.readString();
+        status = in.readString();
+        upvotes = in.readInt();
+        createdAt = in.readString();
+        latitude = in.readDouble();
+        longitude = in.readDouble();
+        reportedByName = in.readString();
+    }
+
+    public static final Creator<Issue> CREATOR = new Creator<Issue>() {
+        @Override
+        public Issue createFromParcel(Parcel in) {
+            return new Issue(in);
+        }
+
+        @Override
+        public Issue[] newArray(int size) {
+            return new Issue[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(category);
+        dest.writeString(description);
+        dest.writeString(status);
+        dest.writeInt(upvotes);
+        dest.writeString(createdAt);
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
+        dest.writeString(reportedByName);
+    }
+    // --- End of Parcelable Implementation ---
+
+
+    // --- Getters ---
     public int getId() { return id; }
     public String getCategory() { return category; }
     public String getDescription() { return description; }
@@ -26,4 +74,8 @@ public class Issue {
     public int getUpvotes() { return upvotes; }
     public String getCreatedAt() { return createdAt; }
     public String getReportedByName() { return reportedByName; }
+
+    // THE FIX: Added the missing getter methods
+    public double getLatitude() { return latitude; }
+    public double getLongitude() { return longitude; }
 }

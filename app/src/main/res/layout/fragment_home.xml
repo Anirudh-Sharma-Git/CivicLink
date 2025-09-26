@@ -22,7 +22,7 @@
             android:orientation="vertical"
             android:paddingTop="16dp">
 
-            <!-- Search Bar -->
+            <!-- Search Bar (No changes here) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
                     android:importantForAutofill="no" />
             </LinearLayout>
 
-            <!-- Filter Chips -->
+            <!-- Filter Chips (No changes here) -->
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -111,11 +111,26 @@
                 android:layout_marginEnd="16dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp">
+
                 <fragment
                     android:id="@+id/map"
                     android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
+
+                <!-- THE ONLY CHANGE: The "Expand" button you wanted -->
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/expandMapButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|end"
+                    android:layout_margin="8dp"
+                    app:fabSize="mini"
+                    android:src="@drawable/ic_fullscreen"
+                    app:backgroundTint="@color/logo_background"
+                    app:tint="@color/white"
+                    android:contentDescription="Expand Map"/>
+
             </androidx.cardview.widget.CardView>
 
             <View
@@ -125,7 +140,7 @@
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- The dynamic list of issue cards that scrolls under the header -->
+    <!-- The dynamic list of issue cards (No changes here) -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/issuesRecyclerView"
         android:layout_width="match_parent"

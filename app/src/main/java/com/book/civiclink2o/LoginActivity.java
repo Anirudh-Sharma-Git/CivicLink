@@ -39,8 +39,6 @@ public class LoginActivity extends AppCompatActivity {
     private TextView toggleLoginSignUp;
     private Button guestButton;
     private ApiService apiService;
-
-    // --- The Session Manager for remembering the logged-in user ---
     private SessionManager sessionManager;
 
     @Override
@@ -48,19 +46,15 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // --- Initialize the Session Manager ---
         sessionManager = new SessionManager(getApplicationContext());
 
-        // --- Check if the user is already logged in ---
-        // If they are, we go straight to the Home screen without showing the login page.
         if (sessionManager.isLoggedIn()) {
             navigateToHome();
-            return; // Important: return to stop the rest of onCreate from running
+            return;
         }
 
-        // --- Initialize Retrofit (our "telephone system") ---
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:3000") // Special address for emulator to reach laptop's localhost
+                .baseUrl("http://10.0.2.2:3000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         apiService = retrofit.create(ApiService.class);
@@ -71,7 +65,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initializeViews() {
-        // Toggles and containers
         phoneLoginToggle = findViewById(R.id.phoneLoginToggle);
         emailLoginToggle = findViewById(R.id.emailLoginToggle);
         toggleLoginSignUp = findViewById(R.id.toggleLoginSignUp);
@@ -80,24 +73,16 @@ public class LoginActivity extends AppCompatActivity {
         emailLoginLayout = findViewById(R.id.emailLoginLayout);
         phoneSignUpLayout = findViewById(R.id.phoneSignUpLayout);
         emailSignUpLayout = findViewById(R.id.emailSignUpLayout);
-
-        // Email Sign Up fields
         emailSignUpName = findViewById(R.id.emailSignUpName);
         emailSignUpEmail = findViewById(R.id.emailSignUpEmail);
         emailSignUpPassword = findViewById(R.id.emailSignUpPassword);
         emailSignUpConfirmPassword = findViewById(R.id.emailSignUpConfirmPassword);
         emailSignUpButton = findViewById(R.id.emailSignUpButton);
-
-        // Email Login fields
         emailLoginEmail = findViewById(R.id.emailLoginEmail);
         emailLoginPassword = findViewById(R.id.emailLoginPassword);
         loginButton = findViewById(R.id.loginButton);
-
-        // Phone Login fields
         phoneLoginNumber = findViewById(R.id.phoneLoginNumber);
         sendOtpButton = findViewById(R.id.sendOtpButton);
-
-        // Phone Sign Up fields
         phoneSignUpName = findViewById(R.id.phoneSignUpName);
         phoneSignUpNumber = findViewById(R.id.phoneSignUpNumber);
         phoneSignUpButton = findViewById(R.id.phoneSignUpButton);
@@ -108,17 +93,19 @@ public class LoginActivity extends AppCompatActivity {
         emailLoginToggle.setOnClickListener(v -> { isPhoneMode = false; updateUI(); });
         toggleLoginSignUp.setOnClickListener(v -> { isLogin = !isLogin; updateUI(); });
         guestButton.setOnClickListener(v -> navigateToHome());
-
-        // Set listeners for all 4 action buttons
         emailSignUpButton.setOnClickListener(v -> handleEmailSignUp());
         loginButton.setOnClickListener(v -> handleEmailLogin());
-        sendOtpButton.setOnClickListener(v -> handleSendOtp(false)); // isSignUp = false
-        phoneSignUpButton.setOnClickListener(v -> handleSendOtp(true));  // isSignUp = true
+
+        // Both the "Send OTP" button for login and sign-up will call the same smart method
+        sendOtpButton.setOnClickListener(v -> handleSendOtp());
+        phoneSignUpButton.setOnClickListener(v -> handleSendOtp());
     }
 
-    private void handleSendOtp(boolean isSignUp) {
+    // This single, smart method handles both login and sign-up OTP requests
+    private void handleSendOtp() {
         String phoneNumber;
-        String name = null; // Name is null by default (for login)
+        String name = null;
+        boolean isSignUp = !isLogin; // We know it's a sign-up if we are NOT on the login screen
 
         if (isSignUp) {
             phoneNumber = phoneSignUpNumber.getText().toString().trim();
@@ -136,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        final String finalName = name; // Need a final variable for the inner class
+        final String finalName = name;
         apiService.sendOtp(new SendOtpRequest(phoneNumber)).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -145,7 +132,7 @@ public class LoginActivity extends AppCompatActivity {
                     Intent intent = new Intent(LoginActivity.this, OtpActivity.class);
                     intent.putExtra("PHONE_NUMBER", phoneNumber);
                     if (isSignUp) {
-                        intent.putExtra("USER_NAME", finalName); // Pass the name only if it's a sign-up
+                        intent.putExtra("USER_NAME", finalName);
                     }
                     startActivity(intent);
                 } else {
@@ -163,19 +150,14 @@ public class LoginActivity extends AppCompatActivity {
         String email = emailLoginEmail.getText().toString().trim();
         String password = emailLoginPassword.getText().toString().trim();
         if (email.isEmpty() || password.isEmpty()) { Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show(); return; }
-
         LoginRequest loginRequest = new LoginRequest(email, password);
         apiService.loginUser(loginRequest).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
-
-                    // Get the user data from the server's response
                     LoginResponse.UserData user = response.body().getUser();
-                    // Save the user's session using our SessionManager
                     sessionManager.createLoginSession(user.getId(), user.getName());
-
                     navigateToHome();
                 } else {
                     Toast.makeText(LoginActivity.this, "Login failed. Please check credentials.", Toast.LENGTH_SHORT).show();
@@ -195,7 +177,6 @@ public class LoginActivity extends AppCompatActivity {
         String confirmPassword = emailSignUpConfirmPassword.getText().toString().trim();
         if (name.isEmpty() || email.isEmpty() || password.isEmpty()) { Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show(); return; }
         if (!password.equals(confirmPassword)) { Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show(); return; }
-
         User user = new User(name, email, password);
         apiService.registerUser(user).enqueue(new Callback<Void>() {
             @Override
@@ -235,7 +216,7 @@ public class LoginActivity extends AppCompatActivity {
             } else {
                 emailLoginLayout.setVisibility(View.VISIBLE);
             }
-        } else { // isSignUP
+        } else {
             if (isPhoneMode) {
                 phoneSignUpLayout.setVisibility(View.VISIBLE);
             } else {

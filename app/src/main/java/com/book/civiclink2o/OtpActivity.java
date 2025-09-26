@@ -2,14 +2,11 @@ package com.book.civiclink2o;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.material.button.MaterialButton;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,10 +19,8 @@ public class OtpActivity extends AppCompatActivity {
     private EditText otpEditText;
     private MaterialButton verifyOtpButton;
     private String phoneNumber;
-    private String userName;
+    private String userName; // This will be NOT NULL only if it's a sign-up
     private ApiService apiService;
-
-    // --- THIS IS NEW ---
     private SessionManager sessionManager;
 
     @Override
@@ -33,9 +28,7 @@ public class OtpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otp);
 
-        // --- THIS IS NEW ---
         sessionManager = new SessionManager(getApplicationContext());
-
         otpSubtitle = findViewById(R.id.otpSubtitle);
         otpEditText = findViewById(R.id.otpEditText);
         verifyOtpButton = findViewById(R.id.verifyOtpButton);
@@ -64,34 +57,45 @@ public class OtpActivity extends AppCompatActivity {
     }
 
     private void verifyOtp(String phone, String otp, String name) {
-        if (phone == null) {
-            Toast.makeText(this, "An error occurred. Please try again.", Toast.LENGTH_SHORT).show();
-            return;
+        if (phone == null) { return; }
+
+        Call<LoginResponse> apiCall;
+
+        // --- THE FIX: The app now decides which endpoint to call ---
+        if (name != null) {
+            // If we have a name, it's a SIGN-UP
+            VerifyOtpRequest request = new VerifyOtpRequest(phone, otp, name);
+            apiCall = apiService.verifyOtpForSignUp(request);
+        } else {
+            // If there's no name, it's a LOGIN
+            VerifyOtpRequest request = new VerifyOtpRequest(phone, otp);
+            apiCall = apiService.verifyOtpForLogin(request);
         }
 
-        VerifyOtpRequest request = (name != null)
-                ? new VerifyOtpRequest(phone, otp, name)
-                : new VerifyOtpRequest(phone, otp);
-
-        apiService.verifyOtp(request).enqueue(new Callback<LoginResponse>() {
+        apiCall.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Toast.makeText(OtpActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OtpActivity.this, "Verification Successful!", Toast.LENGTH_SHORT).show();
 
-                    // --- THIS IS THE FIX ---
-                    // Get the user data from the server's response
                     LoginResponse.UserData user = response.body().getUser();
-                    // Save the user's session using our SessionManager
                     sessionManager.createLoginSession(user.getId(), user.getName());
 
-                    // Navigate to the home screen
                     Intent intent = new Intent(OtpActivity.this, HomeActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
                 } else {
-                    Toast.makeText(OtpActivity.this, "Invalid OTP", Toast.LENGTH_SHORT).show();
+                    // This will now show the correct error message from the server
+                    String errorMessage = "Invalid OTP or error occurred.";
+                    try {
+                        if (response.errorBody() != null) {
+                            // A simple way to get the error message from the server's response
+                            errorMessage = response.errorBody().string().split("\"")[3];
+                        }
+                    } catch (Exception e) { e.printStackTrace(); }
+
+                    Toast.makeText(OtpActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                 }
             }
 

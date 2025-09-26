@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- THE FIX: The root is now a CoordinatorLayout -->
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,7 +7,7 @@
     android:background="@color/app_background"
     tools:context=".ProfileFragment">
 
-    <!-- THE FIX: The title is now in an AppBarLayout, making it the fixed header -->
+    <!-- The fixed header -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,7 +25,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- THE FIX: The content is now in a NestedScrollView that scrolls under the header -->
+    <!-- The scrollable content -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -56,24 +55,24 @@
                         android:layout_height="60dp"
                         android:background="@drawable/logo_background_shape"
                         android:gravity="center"
-                        android:text="G"
                         android:textColor="@color/white"
                         android:textSize="24sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="G" />
 
                     <TextView
                         android:id="@+id/profile_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="@string/guest_user"
                         android:textColor="@color/text_primary"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toEndOf="@id/profile_initial"
-                        app:layout_constraintTop_toTopOf="@id/profile_initial" />
+                        app:layout_constraintTop_toTopOf="@id/profile_initial"
+                        tools:text="Guest User" />
 
                     <TextView
                         android:id="@+id/profile_role"
@@ -101,7 +100,9 @@
                         app:layout_constraintStart_toStartOf="@id/profile_name"
                         app:layout_constraintTop_toBottomOf="@id/profile_role" />
 
+                    <!-- THE FIX: Added the missing ID here -->
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/editProfileButton"
                         style="?attr/materialButtonOutlinedStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -185,13 +186,11 @@
                 android:layout_marginTop="16dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -199,20 +198,17 @@
                         android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:textStyle="bold" />
-                    <!-- Pending Issues Row -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:gravity="center_vertical">
-
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/pending_issues"
                             android:textColor="@color/text_primary" />
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -225,20 +221,17 @@
                             android:textColor="@color/status_pending_text"
                             android:textStyle="bold" />
                     </LinearLayout>
-                    <!-- Points Row -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:gravity="center_vertical">
-
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/points"
                             android:textColor="@color/text_primary" />
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -251,20 +244,17 @@
                             android:textColor="@color/leaderboard_silver_stroke"
                             android:textStyle="bold" />
                     </LinearLayout>
-                    <!-- Member Since Row -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:gravity="center_vertical">
-
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/member_since"
                             android:textColor="@color/text_primary" />
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -281,13 +271,11 @@
                 android:layout_marginTop="16dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -295,18 +283,15 @@
                         android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:textStyle="bold" />
-                    <!-- Notifications Row -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:gravity="center_vertical">
-
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_notifications" />
-
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -314,24 +299,20 @@
                             android:layout_weight="1"
                             android:text="@string/notifications"
                             android:textColor="@color/text_primary" />
-
                         <com.google.android.material.switchmaterial.SwitchMaterial
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true" />
                     </LinearLayout>
-                    <!-- Dark Mode Row -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:gravity="center_vertical">
-
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_moon" />
-
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -339,23 +320,19 @@
                             android:layout_weight="1"
                             android:text="@string/dark_mode"
                             android:textColor="@color/text_primary" />
-
                         <com.google.android.material.switchmaterial.SwitchMaterial
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                     </LinearLayout>
-                    <!-- Language Row -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:gravity="center_vertical">
-
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_language" />
-
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -363,13 +340,11 @@
                             android:layout_weight="1"
                             android:text="@string/language"
                             android:textColor="@color/text_primary" />
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="English"
                             android:textColor="@color/text_secondary" />
-
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
@@ -386,13 +361,11 @@
                 android:layout_marginTop="16dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -400,18 +373,15 @@
                         android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:textStyle="bold" />
-                    <!-- Version Row -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:gravity="center_vertical">
-
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_info" />
-
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -419,30 +389,25 @@
                             android:layout_weight="1"
                             android:text="@string/version"
                             android:textColor="@color/text_primary" />
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="1.0.0 (Beta)"
                             android:textColor="@color/text_secondary" />
-
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_arrow_right" />
                     </LinearLayout>
-                    <!-- Privacy Policy Row -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:gravity="center_vertical">
-
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_shield" />
-
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -450,23 +415,20 @@
                             android:layout_weight="1"
                             android:text="@string/privacy_policy"
                             android:textColor="@color/text_primary" />
-
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_arrow_right" />
                     </LinearLayout>
-                    <!-- Terms of Service Row -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:gravity="center_vertical">
-
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/ic_reports" /> <!-- Reusing reports icon -->
+                            android:src="@drawable/ic_reports" />
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -474,24 +436,20 @@
                             android:layout_weight="1"
                             android:text="@string/terms_of_service"
                             android:textColor="@color/text_primary" />
-
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_arrow_right" />
                     </LinearLayout>
-                    <!-- Help & Support Row -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:gravity="center_vertical">
-
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_help" />
-
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -499,7 +457,6 @@
                             android:layout_weight="1"
                             android:text="@string/help_and_support"
                             android:textColor="@color/text_primary" />
-
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"

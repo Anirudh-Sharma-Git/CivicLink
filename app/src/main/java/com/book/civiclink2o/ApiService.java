@@ -1,38 +1,32 @@
 package com.book.civiclink2o;
 
-import java.util.List; // Import the List class
+import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.GET; // Import the GET annotation
+import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Path; // Import the Path annotation
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
 
 public interface ApiService {
 
-    // --- User Authentication Endpoints (Same as before) ---
-    @POST("api/auth/register")
-    Call<Void> registerUser(@Body User user);
+    // (Your existing endpoints for email, issues, and profile are correct)
+    @POST("api/auth/register") Call<Void> registerUser(@Body User user);
+    @POST("api/auth/login") Call<LoginResponse> loginUser(@Body LoginRequest loginRequest);
+    @POST("api/issues") Call<Void> createIssue(@Body IssueRequest issueRequest);
+    @GET("api/issues") Call<List<Issue>> getAllIssues();
+    @GET("api/issues/user/{userId}") Call<List<Issue>> getIssuesForUser(@Path("userId") int userId);
+    @GET("api/auth/user/{userId}") Call<UserDetails> getUserDetails(@Path("userId") int userId);
+    @PUT("api/auth/user/{userId}") Call<Void> updateUserDetails(@Path("userId") int userId, @Body UpdateUserRequest request);
 
-    @POST("api/auth/login")
-    Call<LoginResponse> loginUser(@Body LoginRequest loginRequest);
-
+    // --- PHONE AUTH (UPDATED) ---
     @POST("api/auth/send-otp")
     Call<Void> sendOtp(@Body SendOtpRequest sendOtpRequest);
 
-    @POST("api/auth/verify-otp")
-    Call<LoginResponse> verifyOtp(@Body VerifyOtpRequest verifyOtpRequest);
+    // --- THE FIX: Two new, specific endpoints for OTP verification ---
+    @POST("api/auth/verify-otp/login")
+    Call<LoginResponse> verifyOtpForLogin(@Body VerifyOtpRequest verifyOtpRequest);
 
-    // --- Issue Reporting Endpoint (Same as before) ---
-    @POST("api/issues")
-    Call<Void> createIssue(@Body IssueRequest issueRequest);
-
-    // --- THIS IS NEW: Endpoints for FETCHING issues ---
-
-    // This gets ALL issues for the Home screen
-    @GET("api/issues")
-    Call<List<Issue>> getAllIssues();
-
-    // This gets issues for a SPECIFIC user for the "My Reports" screen
-    @GET("api/issues/user/{userId}")
-    Call<List<Issue>> getIssuesForUser(@Path("userId") int userId);
+    @POST("api/auth/verify-otp/signup")
+    Call<LoginResponse> verifyOtpForSignUp(@Body VerifyOtpRequest verifyOtpRequest);
 }

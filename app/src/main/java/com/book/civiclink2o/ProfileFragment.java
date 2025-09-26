@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView; // Make sure this is imported
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,7 +15,6 @@ import com.google.android.material.button.MaterialButton;
 
 public class ProfileFragment extends Fragment {
 
-    // --- THIS IS NEW: Add references for the views we need to update ---
     private TextView profileName;
     private TextView profileInitial;
     private SessionManager sessionManager;
@@ -23,7 +22,6 @@ public class ProfileFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // This connects our Java file to the layout for the profile fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
@@ -31,39 +29,23 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // --- THIS IS THE NEW LOGIC ---
-
-        // 1. Initialize our SessionManager
         sessionManager = new SessionManager(getContext());
 
-        // 2. Find the TextViews from the layout by their IDs
         profileName = view.findViewById(R.id.profile_name);
         profileInitial = view.findViewById(R.id.profile_initial);
-
-        // 3. Check if a user is actually logged in
-        if (sessionManager.isLoggedIn()) {
-            // If they are, get their name from the session "memory"
-            String userName = sessionManager.getUserName();
-
-            // Update the main name TextView
-            profileName.setText(userName);
-
-            // Update the initial in the circle
-            if (userName != null && !userName.isEmpty()) {
-                profileInitial.setText(String.valueOf(userName.charAt(0)));
-            }
-        }
-        // If no one is logged in, the layout will just show the default "Guest User" text.
-
-        // --- END OF NEW LOGIC ---
-
-
-        // This is the logout button logic we already built
+        MaterialButton editProfileButton = view.findViewById(R.id.editProfileButton);
         MaterialButton logoutButton = view.findViewById(R.id.logoutButton);
-        logoutButton.setOnClickListener(v -> {
-            // --- THIS IS A SMALL FIX: We need to clear the session on logout ---
-            sessionManager.logoutUser(); // This clears the app's "memory"
 
+        // This will set the name when the screen is first created.
+        updateProfileInfo();
+
+        editProfileButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+            startActivity(intent);
+        });
+
+        logoutButton.setOnClickListener(v -> {
+            sessionManager.logoutUser();
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
@@ -71,5 +53,31 @@ public class ProfileFragment extends Fragment {
                 getActivity().finish();
             }
         });
+    }
+
+    // --- THIS IS THE FIX ---
+    // This is a special lifecycle method that runs every time the fragment becomes visible to the user.
+    @Override
+    public void onResume() {
+        super.onResume();
+        // This ensures that if the user updates their name on the Edit Profile screen,
+        // it will be refreshed here when they come back.
+        updateProfileInfo();
+    }
+
+    /**
+     * A helper method to read the user's name from the session and update the UI.
+     * We use this to avoid writing the same code in two places.
+     */
+    private void updateProfileInfo() {
+        if (sessionManager.isLoggedIn()) {
+            String userName = sessionManager.getUserName();
+            profileName.setText(userName);
+
+            if (userName != null && !userName.isEmpty()) {
+                // Set the initial in the circle, converting it to uppercase
+                profileInitial.setText(String.valueOf(userName.charAt(0)).toUpperCase());
+            }
+        }
     }
 }

@@ -86,11 +86,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnMa
     }
 
     private void setupApiService() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:3000")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        apiService = retrofit.create(ApiService.class);
+        // THE FIX: Get the telephone system from our new, central ApiClient
+        apiService = ApiClient.getClient().create(ApiService.class);
     }
 
     private void setupMap() {

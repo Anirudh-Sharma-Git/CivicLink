@@ -40,11 +40,8 @@ public class OtpActivity extends AppCompatActivity {
             otpSubtitle.setText("An OTP has been sent to +91 " + phoneNumber);
         }
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:3000")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        apiService = retrofit.create(ApiService.class);
+        // THE FIX: Get the telephone system from our new, central ApiClient
+        apiService = ApiClient.getClient().create(ApiService.class);
 
         verifyOtpButton.setOnClickListener(v -> {
             String otp = otpEditText.getText().toString().trim();

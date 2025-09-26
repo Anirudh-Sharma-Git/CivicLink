@@ -57,11 +57,8 @@ public class RaiseIssueActivity extends AppCompatActivity {
         setContentView(R.layout.activity_raise_issue);
 
         sessionManager = new SessionManager(getApplicationContext());
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:3000")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        apiService = retrofit.create(ApiService.class);
+        // THE FIX: Get the telephone system from our new, central ApiClient
+        apiService = ApiClient.getClient().create(ApiService.class);
 
         // --- THIS IS THE FIX ---
         // We must initialize the location client here, before we ever try to use it.

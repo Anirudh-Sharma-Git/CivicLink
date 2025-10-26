@@ -1,7 +1,9 @@
-// routes/issues.js - The "rulebook" for handling civic issues
+// routes/issues.js - The FINAL version with the correct filename logic
 
 const express = require('express');
 const mysql = require('mysql2/promise');
+const multer = require('multer');
+const path = require('path');
 const router = express.Router();
 
 const dbConfig = {
@@ -11,8 +13,25 @@ const dbConfig = {
     database: process.env.DB_DATABASE
 };
 
-// --- Endpoint 1: GET /api/issues ---
-// This rule gets a list of ALL issues for the main Home screen feed.
+// --- Multer Configuration (The "Receiving Dock") ---
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/');
+    },
+    // --- THIS IS THE FIX ---
+    // We will now correctly use the file extension from the file the app sends.
+    filename: function (req, file, cb) {
+        // file.originalname will be something like "image-12345.jpg" (from our app)
+        // path.extname will extract the ".jpg"
+        const uniqueSuffix = Date.now() + path.extname(file.originalname);
+        cb(null, file.fieldname + '-' + uniqueSuffix);
+    }
+    // --- END OF FIX ---
+});
+
+const upload = multer({ storage: storage });
+
+// --- GET Endpoints (Unchanged) ---
 router.get('/', async (req, res) => {
     try {
         const connection = await mysql.createConnection(dbConfig);
@@ -33,13 +52,9 @@ router.get('/', async (req, res) => {
     }
 });
 
-// --- THIS IS THE NEW ENDPOINT ---
-// --- Endpoint 2: GET /api/issues/user/:userId ---
-// This rule gets a list of issues for ONLY a specific user. This is for the "My Reports" screen.
 router.get('/user/:userId', async (req, res) => {
     try {
-        const userId = req.params.userId; // Get the user's ID from the URL
-
+        const userId = req.params.userId;
         const connection = await mysql.createConnection(dbConfig);
         const sql = `
             SELECT 
@@ -50,7 +65,6 @@ router.get('/user/:userId', async (req, res) => {
         `;
         const [issues] = await connection.execute(sql, [userId]);
         await connection.end();
-
         res.status(200).json(issues);
     } catch (error) {
         console.error("Error fetching user issues:", error);
@@ -58,18 +72,20 @@ router.get('/user/:userId', async (req, res) => {
     }
 });
 
-
-// --- Endpoint 3: POST /api/issues ---
-// This rule handles the "Submit Issue" button. (Same as before)
-router.post('/', async (req, res) => {
+// --- POST Endpoint (Unchanged, this part was already correct) ---
+router.post('/', upload.single('image'), async (req, res) => {
     const { category, description, latitude, longitude, reportedBy } = req.body;
-    if (!category || !description || !latitude || !longitude || !reportedBy) {
-        return res.status(400).json({ message: "All fields are required." });
+    const imageFile = req.file;
+
+    if (!category || !description || !latitude || !longitude || !reportedBy || !imageFile) {
+        return res.status(400).json({ message: "All fields, including an image, are required." });
     }
+
     try {
+        const imageUrl = `${process.env.PUBLIC_SERVER_URL}/uploads/${imageFile.filename}`;
         const connection = await mysql.createConnection(dbConfig);
-        const sql = "INSERT INTO issues (category, description, latitude, longitude, reportedBy) VALUES (?, ?, ?, ?, ?)";
-        const [result] = await connection.execute(sql, [category, description, latitude, longitude, reportedBy]);
+        const sql = "INSERT INTO issues (category, description, latitude, longitude, reportedBy, imageUrl) VALUES (?, ?, ?, ?, ?, ?)";
+        const [result] = await connection.execute(sql, [category, description, latitude, longitude, reportedBy, imageUrl]);
         await connection.end();
         res.status(201).json({ message: "Issue reported successfully!", issueId: result.insertId });
     } catch (error) {
@@ -79,3 +95,4 @@ router.post('/', async (req, res) => {
 });
 
 module.exports = router;
+

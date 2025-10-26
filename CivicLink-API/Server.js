@@ -3,17 +3,24 @@
 const express = require('express');
 const mysql = require('mysql2/promise');
 const cors = require('cors');
+const path = require('path'); // <-- THIS IS NEW: Import the built-in 'path' library
 require('dotenv').config();
 
 // Import both of our rulebooks
 const authRoutes = require('./routes/auth');
-const issueRoutes = require('./routes/issues'); // NEW
+const issueRoutes = require('./routes/issues');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+
+// --- THIS IS THE NEW, CRUCIAL LINE ---
+// This makes the 'uploads' folder publicly accessible.
+// So, a URL like http://[your_server_url]/uploads/image-123.jpg will work.
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// --- END OF NEW LINE ---
 
 const dbConfig = {
     host: process.env.DB_HOST,
@@ -29,7 +36,7 @@ app.get('/', (req, res) => {
 
 // Use the rulebooks for their respective departments
 app.use('/api/auth', authRoutes);
-app.use('/api/issues', issueRoutes); // NEW
+app.use('/api/issues', issueRoutes);
 
 
 // Start the server

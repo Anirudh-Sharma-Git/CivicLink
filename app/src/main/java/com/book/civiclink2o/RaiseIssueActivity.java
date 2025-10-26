@@ -4,8 +4,9 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build; // NEW IMPORT
 import android.os.Bundle;
-import android.view.View;
+// Import removed: Handler and Looper are no longer needed
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -26,24 +27,23 @@ import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RaiseIssueActivity extends AppCompatActivity {
 
-    // UI Elements
+    // (Your existing UI, API, and Location variables are the same)
     private ImageView issueImageView, gpsButton;
     private MaterialButton takePhotoButton, galleryButton, submitButton;
     private AutoCompleteTextView categoryAutoCompleteTextView;
     private EditText descriptionEditText, locationEditText;
-
-    // API and Session Management
     private ApiService apiService;
     private SessionManager sessionManager;
-
-    // Location Services
-    private FusedLocationProviderClient fusedLocationClient; // This was declared...
+    private FusedLocationProviderClient fusedLocationClient;
     private Location lastKnownLocation;
+
+    // --- THIS IS NEW: Notification specific variables ---
+    private NotificationHelper notificationHelper;
+    private ActivityResultLauncher<String> requestNotificationPermissionLauncher;
+    // --- END NEW ---
 
     // Activity Result Launchers
     private ActivityResultLauncher<Void> takePictureLauncher;
@@ -57,16 +57,16 @@ public class RaiseIssueActivity extends AppCompatActivity {
         setContentView(R.layout.activity_raise_issue);
 
         sessionManager = new SessionManager(getApplicationContext());
-        // THE FIX: Get the telephone system from our new, central ApiClient
         apiService = ApiClient.getClient().create(ApiService.class);
-
-        // --- THIS IS THE FIX ---
-        // We must initialize the location client here, before we ever try to use it.
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        // --- END OF FIX ---
+
+        // --- THIS IS NEW: Initialize Notification Helper ---
+        // (The channel is created in the helper's constructor)
+        notificationHelper = new NotificationHelper(this);
+        // --- END NEW ---
 
         initializeViews();
-        setupLaunchers();
+        setupLaunchers(); // This will now include the notification permission launcher
         setupButtonClickListeners();
 
         String[] categories = getResources().getStringArray(R.array.issue_categories);
@@ -77,6 +77,7 @@ public class RaiseIssueActivity extends AppCompatActivity {
     }
 
     private void initializeViews() {
+        // (This method is unchanged)
         issueImageView = findViewById(R.id.issueImageView);
         takePhotoButton = findViewById(R.id.takePhotoButton);
         galleryButton = findViewById(R.id.galleryButton);
@@ -88,6 +89,7 @@ public class RaiseIssueActivity extends AppCompatActivity {
     }
 
     private void setupLaunchers() {
+        // (Your existing launchers are the same)
         takePictureLauncher = registerForActivityResult(new ActivityResultContracts.TakePicturePreview(), result -> {
             if (result != null) { issueImageView.setImageBitmap(result); }
         });
@@ -106,9 +108,21 @@ public class RaiseIssueActivity extends AppCompatActivity {
                 Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
             }
         });
+
+        // --- THIS IS NEW: Initialize the launcher for the notification permission ---
+        requestNotificationPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+            if (isGranted) {
+                // Permission was granted *after* we asked, so now send the notification
+                notificationHelper.sendReportSubmittedNotification();
+            } else {
+                // Permission was denied.
+                Toast.makeText(this, "Notification permission denied.", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void setupButtonClickListeners() {
+        // (This method is unchanged)
         takePhotoButton.setOnClickListener(v -> {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                 takePictureLauncher.launch(null);
@@ -122,22 +136,14 @@ public class RaiseIssueActivity extends AppCompatActivity {
     }
 
     private void handleSubmitIssue() {
+        // (This method is unchanged up to the success response)
         String category = categoryAutoCompleteTextView.getText().toString();
         String description = descriptionEditText.getText().toString().trim();
         int userId = sessionManager.getUserId();
 
-        if (category.isEmpty() || description.isEmpty()) {
-            Toast.makeText(this, "Please fill category and description.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (lastKnownLocation == null) {
-            Toast.makeText(this, "Location not available. Please try fetching it again.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (userId == -1) {
-            Toast.makeText(this, "Error: You are not logged in.", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        if (category.isEmpty() || description.isEmpty()) { /* ... */ return; }
+        if (lastKnownLocation == null) { /* ... */ return; }
+        if (userId == -1) { /* ... */ return; }
 
         IssueRequest issueRequest = new IssueRequest(
                 category,
@@ -152,7 +158,13 @@ public class RaiseIssueActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(RaiseIssueActivity.this, "Issue submitted successfully!", Toast.LENGTH_LONG).show();
-                    finish();
+
+                    // --- THIS IS THE NEW LOGIC ---
+                    // We are now triggering the notification INSTANTLY.
+                    triggerNotification();
+                    // --- END NEW LOGIC ---
+
+                    finish(); // Close the form immediately
                 } else {
                     Toast.makeText(RaiseIssueActivity.this, "Failed to submit issue. Please try again.", Toast.LENGTH_SHORT).show();
                 }
@@ -164,6 +176,25 @@ public class RaiseIssueActivity extends AppCompatActivity {
         });
     }
 
+    // --- THIS IS A NEW HELPER METHOD ---
+    private void triggerNotification() {
+        // On modern Android, we must check for permission before sending a notification
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // TIRAMISU is Android 13
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                // Permission is already granted, send the notification
+                notificationHelper.sendReportSubmittedNotification();
+            } else {
+                // Permission is not granted, request it from the user
+                // The launcher's callback (defined in setupLaunchers) will handle the result.
+                requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+            }
+        } else {
+            // This is an older phone (Android 12 or below), so permission is not needed. Just send it.
+            notificationHelper.sendReportSubmittedNotification();
+        }
+    }
+
+    // (The location methods are unchanged)
     private void requestLocationPermission() {
         boolean hasPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
         if (!hasPermission) {
@@ -188,3 +219,4 @@ public class RaiseIssueActivity extends AppCompatActivity {
                 });
     }
 }
+

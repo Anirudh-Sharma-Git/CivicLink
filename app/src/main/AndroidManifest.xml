@@ -2,10 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Existing Permissions -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.CAMERA" /> <!-- THE FIX: Add permission to access the internet -->
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- THE FIX: Add new permissions for notifications and vibration -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
+
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -22,6 +28,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CivicLink2O"
         tools:targetApi="31">
+
+        <!-- Your existing activity declarations (order preserved) -->
         <activity
             android:name=".MapActivity"
             android:exported="false" />
@@ -34,14 +42,14 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR_API_KEY_HERE" /> <!-- (All your activity declarations remain the same) -->
+            android:value="AIzaSyDw6LTq6oITelgImvXXNOrtrUY4epdBsCU" />
+
         <activity
             android:name=".SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -60,3 +68,4 @@
     </application>
 
 </manifest>
+

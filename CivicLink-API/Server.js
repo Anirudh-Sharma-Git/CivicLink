@@ -1,14 +1,15 @@
-// server.js - The main file for our API
+// server.js - The main file, now with an Admin "department" and website
 
 const express = require('express');
 const mysql = require('mysql2/promise');
 const cors = require('cors');
-const path = require('path'); // <-- THIS IS NEW: Import the built-in 'path' library
+const path = require('path');
 require('dotenv').config();
 
-// Import both of our rulebooks
+// Import all three of our rulebooks
 const authRoutes = require('./routes/auth');
 const issueRoutes = require('./routes/issues');
+const adminRoutes = require('./routes/admin'); // <-- THIS IS NEW
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,11 +17,8 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// --- THIS IS THE NEW, CRUCIAL LINE ---
-// This makes the 'uploads' folder publicly accessible.
-// So, a URL like http://[your_server_url]/uploads/image-123.jpg will work.
+// This makes the 'uploads' folder publicly accessible
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-// --- END OF NEW LINE ---
 
 const dbConfig = {
     host: process.env.DB_HOST,
@@ -34,9 +32,15 @@ app.get('/', (req, res) => {
     res.json({ message: "Welcome to the CivicLink API! It's running!" });
 });
 
+// --- THIS IS NEW: A route to serve our admin.html file ---
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'admin.html'));
+});
+
 // Use the rulebooks for their respective departments
 app.use('/api/auth', authRoutes);
 app.use('/api/issues', issueRoutes);
+app.use('/api/admin', adminRoutes); // <-- THIS IS NEW
 
 
 // Start the server
@@ -50,3 +54,4 @@ app.listen(PORT, async () => {
         console.error("!!! ERROR connecting to the database !!!", error.message);
     }
 });
+

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - CivicLink</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 24px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            vertical-align: middle;
+        }
+        th {
+            background-color: #f9f9f9;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background-color: #fcfcfc;
+        }
+        img {
+            max-width: 150px;
+            max-height: 100px;
+            border-radius: 4px;
+        }
+        select, button {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        button {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #219653;
+        }
+        .loading {
+            text-align: center;
+            font-size: 1.2em;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>CivicLink Admin Dashboard</h1>
+        <div id="loading" class="loading">Loading issues and workers...</div>
+        <table id="issuesTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Photo</th>
+                    <th>Location</th>
+                    <th>Reported By</th>
+                    <th>Upvotes</th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                    <th>Assign To</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="issuesTBody">
+                <!-- Rows will be inserted here by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Store our data globally
+        let allIssues = [];
+        let allWorkers = [];
+
+        // Main function to run when the page loads
+        window.onload = async () => {
+            try {
+                // Fetch both issues and workers at the same time
+                const [issuesResponse, workersResponse] = await Promise.all([
+                    fetch('/api/issues'),
+                    fetch('/api/admin/workers')
+                ]);
+
+                allIssues = await issuesResponse.json();
+                allWorkers = await workersResponse.json();
+
+                // Once we have the data, build the table
+                populateTable();
+                document.getElementById('loading').style.display = 'none';
+
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                document.getElementById('loading').innerText = 'Failed to load data. Please check the server.';
+            }
+        };
+
+        // This function builds the HTML for the table
+        function populateTable() {
+            const tableBody = document.getElementById('issuesTBody');
+            tableBody.innerHTML = ''; // Clear the table first
+
+            allIssues.forEach(issue => {
+                const row = document.createElement('tr');
+                
+                // 1. Create the "Assign To" dropdown for this row
+                let workerOptions = '<option value="null">Unassigned</option>';
+                allWorkers.forEach(worker => {
+                    const isSelected = issue.assignedTo === worker.id ? 'selected' : '';
+                    workerOptions += `<option value="${worker.id}" ${isSelected}>${worker.name} (${worker.department})</option>`;
+                });
+                const workerDropdown = `<select id="worker-${issue.id}">${workerOptions}</select>`;
+
+                // 2. Create the "Status" dropdown
+                const statuses = ['Pending', 'In Progress', 'Resolved'];
+                let statusOptions = '';
+                statuses.forEach(status => {
+                    const isSelected = issue.status === status ? 'selected' : '';
+                    statusOptions += `<option value="${status}" ${isSelected}>${status}</option>`;
+                });
+                const statusDropdown = `<select id="status-${issue.id}">${statusOptions}</select>`;
+
+                // 3. Create the "Priority" dropdown
+                const priorities = ['None', 'Low', 'Medium', 'High'];
+                let priorityOptions = '';
+                priorities.forEach(priority => {
+                    const isSelected = issue.priority === priority ? 'selected' : '';
+                    priorityOptions += `<option value="${priority}" ${isSelected}>${priority}</option>`;
+                });
+                const priorityDropdown = `<select id="priority-${issue.id}">${priorityOptions}</select>`;
+
+                // 4. Create the "Image" link
+                const imageTag = issue.imageUrl ? `<a href="${issue.imageUrl}" target="_blank"><img src="${issue.imageUrl}" alt="Issue Image"></a>` : 'No Image';
+
+                // 5. Build the final row HTML
+                row.innerHTML = `
+                    <td>${issue.id}</td>
+                    <td>${issue.category}</td>
+                    <td>${issue.description}</td>
+                    <td>${imageTag}</td>
+                    <td><a href="https://maps.google.com/?q=${issue.latitude},${issue.longitude}" target="_blank">View on Map</a></td>
+                    <td>${issue.reportedByName} (ID: ${issue.reportedBy})</td>
+                    <td>${issue.upvotes}</td>
+                    <td>${statusDropdown}</td>
+                    <td>${priorityDropdown}</td>
+                    <td>${workerDropdown}</td>
+                    <td><button onclick="updateIssue(${issue.id})">Update</button></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // This function is called when an "Update" button is clicked
+        async function updateIssue(issueId) {
+            // Get the new values from the dropdowns for that specific row
+            const newStatus = document.getElementById(`status-${issueId}`).value;
+            const newPriority = document.getElementById(`priority-${issueId}`).value;
+            const newWorkerId = document.getElementById(`worker-${issueId}`).value;
+
+            try {
+                const response = await fetch(`/api/admin/issue/${issueId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        status: newStatus,
+                        priority: newPriority,
+                        assignedTo: newWorkerId === 'null' ? null : newWorkerId
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Server responded with an error');
+                }
+
+                const result = await response.json();
+                alert(result.message);
+
+                // Refresh the list to show the new changes
+                // Find the issue in our 'allIssues' array and update it
+                const issueIndex = allIssues.findIndex(issue => issue.id === issueId);
+                if (issueIndex > -1) {
+                    allIssues[issueIndex].status = newStatus;
+                    allIssues[issueIndex].priority = newPriority;
+                    allIssues[issueIndex].assignedTo = newWorkerId === 'null' ? null : parseInt(newWorkerId);
+                }
+                
+            } catch (error) {
+                console.error("Error updating issue:", error);
+                alert('Failed to update issue.');
+            }
+        }
+    </script>
+</body>
+</html>

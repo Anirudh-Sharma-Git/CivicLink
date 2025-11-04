@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <!-- All the views are the same as our issue_card_item, just with new IDs to avoid conflicts -->
         <TextView
             android:id="@+id/sheet_issue_category"
             android:layout_width="wrap_content"

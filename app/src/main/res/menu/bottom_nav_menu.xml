@@ -8,7 +8,7 @@
         android:id="@+id/navigation_reports"
         android:icon="@drawable/ic_reports"
         android:title="@string/nav_my_reports" />
-    <!-- A placeholder item for the central FAB -->
+    <!-- A placeholder for central FAB -->
     <item
         android:id="@+id/navigation_placeholder"
         android:icon="@drawable/transparent_icon"

@@ -7,7 +7,6 @@
     android:background="@color/app_background"
     tools:context=".MyReportsFragment">
 
-    <!-- The fixed header with the title and filters -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,7 +27,6 @@
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
-            <!-- Filter Chips -->
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -84,7 +82,6 @@
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- THE FIX: The old static list is replaced by our dynamic RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myReportsRecyclerView"
         android:layout_width="match_parent"

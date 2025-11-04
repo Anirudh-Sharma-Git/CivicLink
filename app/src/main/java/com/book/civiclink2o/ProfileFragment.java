@@ -36,7 +36,6 @@ public class ProfileFragment extends Fragment {
         MaterialButton editProfileButton = view.findViewById(R.id.editProfileButton);
         MaterialButton logoutButton = view.findViewById(R.id.logoutButton);
 
-        // This will set the name when the screen is first created.
         updateProfileInfo();
 
         editProfileButton.setOnClickListener(v -> {
@@ -55,20 +54,14 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    // --- THIS IS THE FIX ---
-    // This is a special lifecycle method that runs every time the fragment becomes visible to the user.
     @Override
     public void onResume() {
         super.onResume();
-        // This ensures that if the user updates their name on the Edit Profile screen,
-        // it will be refreshed here when they come back.
+
         updateProfileInfo();
     }
 
-    /**
-     * A helper method to read the user's name from the session and update the UI.
-     * We use this to avoid writing the same code in two places.
-     */
+
     private void updateProfileInfo() {
         if (sessionManager.isLoggedIn()) {
             String userName = sessionManager.getUserName();

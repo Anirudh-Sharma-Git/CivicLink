@@ -22,18 +22,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
 
-    // --- References for ALL form fields ---
     private EditText emailSignUpName, emailSignUpEmail, emailSignUpPassword, emailSignUpConfirmPassword;
     private EditText emailLoginEmail, emailLoginPassword;
     private EditText phoneLoginNumber;
     private EditText phoneSignUpName, phoneSignUpNumber;
     private MaterialButton emailSignUpButton, loginButton, sendOtpButton, phoneSignUpButton;
 
-    // State tracking variables
     private boolean isLogin = true;
     private boolean isPhoneMode = true;
 
-    // UI Elements
     private TextView phoneLoginToggle, emailLoginToggle;
     private LinearLayout phoneLoginLayout, emailLoginLayout, phoneSignUpLayout, emailSignUpLayout;
     private TextView toggleLoginSignUp;
@@ -53,7 +50,6 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        // THE FIX: Get the telephone system from our new, central ApiClient
         apiService = ApiClient.getClient().create(ApiService.class);
 
         initializeViews();
@@ -93,16 +89,15 @@ public class LoginActivity extends AppCompatActivity {
         emailSignUpButton.setOnClickListener(v -> handleEmailSignUp());
         loginButton.setOnClickListener(v -> handleEmailLogin());
 
-        // Both the "Send OTP" button for login and sign-up will call the same smart method
         sendOtpButton.setOnClickListener(v -> handleSendOtp());
         phoneSignUpButton.setOnClickListener(v -> handleSendOtp());
     }
 
-    // This single, smart method handles both login and sign-up OTP requests
+
     private void handleSendOtp() {
         String phoneNumber;
         String name = null;
-        boolean isSignUp = !isLogin; // We know it's a sign-up if we are NOT on the login screen
+        boolean isSignUp = !isLogin;
 
         if (isSignUp) {
             phoneNumber = phoneSignUpNumber.getText().toString().trim();
@@ -111,7 +106,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(this, "Please enter your name", Toast.LENGTH_SHORT).show();
                 return;
             }
-        } else { // It's a login attempt
+        } else {
             phoneNumber = phoneLoginNumber.getText().toString().trim();
         }
 
@@ -146,7 +141,7 @@ public class LoginActivity extends AppCompatActivity {
     private void handleEmailLogin() {
         String email = emailLoginEmail.getText().toString().trim();
         String password = emailLoginPassword.getText().toString().trim();
-        if (email.isEmpty() || password.isEmpty()) { Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show(); return; }
+        if (email.isEmpty() || password.isEmpty() || email.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}") || password.matches("[0-9a-zA-Z.!@#$%^&*()_+-=]{8}")) { Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show(); return; }
         LoginRequest loginRequest = new LoginRequest(email, password);
         apiService.loginUser(loginRequest).enqueue(new Callback<LoginResponse>() {
             @Override

@@ -8,7 +8,6 @@
     android:fitsSystemWindows="true"
     tools:context=".RaiseIssueActivity">
 
-    <!-- AppBarLayout for the fixed header -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,7 +34,6 @@
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Scrollable content -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -46,7 +44,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Upload Photo Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -113,7 +110,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Category Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -148,7 +144,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Description Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -167,7 +162,6 @@
                         android:textColor="@color/text_primary"
                         android:textStyle="bold" />
 
-                    <!-- THE FIX: Added the missing ID here -->
                     <EditText
                         android:id="@+id/descriptionEditText"
                         android:layout_width="match_parent"
@@ -183,7 +177,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Location Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -234,8 +227,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Submit Button -->
-            <!-- THE FIX: Added the missing ID here -->
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/submitButton"
                 android:layout_width="match_parent"

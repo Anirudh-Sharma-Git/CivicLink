@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
-// THE FIX: This class is now "Parcelable" (shippable between activities)
 public class Issue implements Parcelable {
 
     private int id;
@@ -14,14 +13,12 @@ public class Issue implements Parcelable {
     private int upvotes;
     private String createdAt;
 
-    // THE FIX: Added the missing location fields
     private double latitude;
     private double longitude;
 
     @SerializedName("reportedByName")
     private String reportedByName;
 
-    // --- Start of Parcelable Implementation ---
     protected Issue(Parcel in) {
         id = in.readInt();
         category = in.readString();
@@ -63,10 +60,8 @@ public class Issue implements Parcelable {
         dest.writeDouble(longitude);
         dest.writeString(reportedByName);
     }
-    // --- End of Parcelable Implementation ---
 
 
-    // --- Getters ---
     public int getId() { return id; }
     public String getCategory() { return category; }
     public String getDescription() { return description; }
@@ -75,7 +70,6 @@ public class Issue implements Parcelable {
     public String getCreatedAt() { return createdAt; }
     public String getReportedByName() { return reportedByName; }
 
-    // THE FIX: Added the missing getter methods
     public double getLatitude() { return latitude; }
     public double getLongitude() { return longitude; }
 }

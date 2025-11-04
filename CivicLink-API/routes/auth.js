@@ -1,4 +1,4 @@
-// routes/auth.js - The FINAL version with all features + a test route
+// routes/auth.js
 
 const express = require('express');
 const mysql = require('mysql2/promise');
@@ -12,7 +12,7 @@ const dbConfig = {
     database: process.env.DB_DATABASE
 };
 
-// --- EMAIL AUTHENTICATION ---
+//EMAIL AUTHENTICATION
 router.post('/register', async (req, res) => {
     const { name, email, password } = req.body;
     if (!name || !email || !password) { return res.status(400).json({ message: "Please provide name, email, and password." }); }
@@ -51,7 +51,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// --- PHONE AUTHENTICATION ---
+//PHONE AUTHENTICATION
 router.post('/send-otp', async (req, res) => {
     const { phoneNumber } = req.body;
     if (!phoneNumber) {
@@ -103,7 +103,7 @@ router.post('/verify-otp/signup', async (req, res) => {
     }
 });
 
-// --- USER PROFILE MANAGEMENT ---
+//USER PROFILE MANAGEMENT
 router.get('/user/:userId', async (req, res) => {
     try {
         const userId = req.params.userId;
@@ -169,12 +169,9 @@ router.put('/user/:userId', async (req, res) => {
     }
 });
 
-// --- THIS IS THE ONLY NEW CODE ---
-// A simple test route to confirm the auth router is working
 router.get('/test', (req, res) => {
     res.status(200).json({ message: "Auth route is working!" });
 });
-// --- END OF NEW CODE ---
 
 
 module.exports = router;

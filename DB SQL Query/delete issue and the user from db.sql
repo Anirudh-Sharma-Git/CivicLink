@@ -1,5 +1,5 @@
--- First, delete all issues reported by the user with ID
-DELETE FROM issues WHERE reportedBy = 9;
+-- delete all issues reported by the user with ID
+DELETE FROM issues WHERE reportedBy = 17;
 
--- Now that their issues are gone, you can safely delete the user with ID 
-DELETE FROM users WHERE id = 9;
+-- safely delete the user with ID 
+DELETE FROM users WHERE id = 12;

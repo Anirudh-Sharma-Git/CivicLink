@@ -32,7 +32,6 @@ import retrofit2.Response;
 
 public class HomeFragment extends Fragment implements View.OnClickListener, OnMapReadyCallback {
 
-    // (Your existing variables are correct)
     private RecyclerView issuesRecyclerView;
     private IssuesAdapter issuesAdapter;
     private List<TextView> filterChips;
@@ -58,7 +57,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnMa
         FloatingActionButton expandMapButton = view.findViewById(R.id.expandMapButton);
         expandMapButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), MapActivity.class);
-            // We now correctly pass our list of issues to the new activity
             intent.putParcelableArrayListExtra("ISSUES_LIST", new ArrayList<>(allIssues));
             startActivity(intent);
         });
@@ -76,10 +74,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnMa
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
-        // Just set the initial camera position. We'll add markers later.
         LatLng ranchi = new LatLng(23.3441, 85.3096);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ranchi, 12f));
-        // We call addMarkersToMap() here in case the map loads AFTER the issues have already arrived.
         addMarkersToMap();
     }
 
@@ -91,8 +87,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnMa
                     allIssues.clear();
                     allIssues.addAll(response.body());
                     filterList("All");
-
-                    // THE FIX: The "delivery truck" has arrived. NOW we add the markers.
                     addMarkersToMap();
                 } else {
                     Toast.makeText(getContext(), "Failed to load issues", Toast.LENGTH_SHORT).show();
@@ -106,14 +100,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnMa
     }
 
     private void addMarkersToMap() {
-        // This check prevents a crash if the map isn't ready yet or if there's no data.
         if (mMap == null || allIssues.isEmpty()) {
             return;
         }
 
-        mMap.clear(); // Clear any old markers
+        mMap.clear();
 
-        // Loop through every issue we fetched from the server
         for (Issue issue : allIssues) {
             if (issue.getLatitude() != 0 && issue.getLongitude() != 0) {
                 LatLng issueLocation = new LatLng(issue.getLatitude(), issue.getLongitude());
@@ -122,7 +114,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnMa
         }
     }
 
-    // (The rest of your methods: setupRecyclerView, setupFilterChips, setupApiService, onClick, filterList are all correct and remain the same)
     private void setupRecyclerView(View view) {
         issuesRecyclerView = view.findViewById(R.id.issuesRecyclerView);
         issuesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

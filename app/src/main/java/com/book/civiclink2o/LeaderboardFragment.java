@@ -13,7 +13,6 @@ public class LeaderboardFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // This connects our Java file to the layout for the leaderboard fragment
         return inflater.inflate(R.layout.fragment_leaderboard, container, false);
     }
 }

@@ -92,20 +92,18 @@
                 </tr>
             </thead>
             <tbody id="issuesTBody">
-                <!-- Rows will be inserted here by JavaScript -->
+                
             </tbody>
         </table>
     </div>
 
     <script>
-        // Store our data globally
         let allIssues = [];
         let allWorkers = [];
 
-        // Main function to run when the page loads
+        
         window.onload = async () => {
             try {
-                // Fetch both issues and workers at the same time
                 const [issuesResponse, workersResponse] = await Promise.all([
                     fetch('/api/issues'),
                     fetch('/api/admin/workers')
@@ -114,7 +112,6 @@
                 allIssues = await issuesResponse.json();
                 allWorkers = await workersResponse.json();
 
-                // Once we have the data, build the table
                 populateTable();
                 document.getElementById('loading').style.display = 'none';
 
@@ -124,15 +121,13 @@
             }
         };
 
-        // This function builds the HTML for the table
         function populateTable() {
             const tableBody = document.getElementById('issuesTBody');
-            tableBody.innerHTML = ''; // Clear the table first
+            tableBody.innerHTML = '';
 
             allIssues.forEach(issue => {
                 const row = document.createElement('tr');
                 
-                // 1. Create the "Assign To" dropdown for this row
                 let workerOptions = '<option value="null">Unassigned</option>';
                 allWorkers.forEach(worker => {
                     const isSelected = issue.assignedTo === worker.id ? 'selected' : '';
@@ -140,7 +135,6 @@
                 });
                 const workerDropdown = `<select id="worker-${issue.id}">${workerOptions}</select>`;
 
-                // 2. Create the "Status" dropdown
                 const statuses = ['Pending', 'In Progress', 'Resolved'];
                 let statusOptions = '';
                 statuses.forEach(status => {
@@ -149,7 +143,6 @@
                 });
                 const statusDropdown = `<select id="status-${issue.id}">${statusOptions}</select>`;
 
-                // 3. Create the "Priority" dropdown
                 const priorities = ['None', 'Low', 'Medium', 'High'];
                 let priorityOptions = '';
                 priorities.forEach(priority => {
@@ -158,10 +151,8 @@
                 });
                 const priorityDropdown = `<select id="priority-${issue.id}">${priorityOptions}</select>`;
 
-                // 4. Create the "Image" link
                 const imageTag = issue.imageUrl ? `<a href="${issue.imageUrl}" target="_blank"><img src="${issue.imageUrl}" alt="Issue Image"></a>` : 'No Image';
 
-                // 5. Build the final row HTML
                 row.innerHTML = `
                     <td>${issue.id}</td>
                     <td>${issue.category}</td>
@@ -179,9 +170,7 @@
             });
         }
 
-        // This function is called when an "Update" button is clicked
         async function updateIssue(issueId) {
-            // Get the new values from the dropdowns for that specific row
             const newStatus = document.getElementById(`status-${issueId}`).value;
             const newPriority = document.getElementById(`priority-${issueId}`).value;
             const newWorkerId = document.getElementById(`worker-${issueId}`).value;
@@ -206,8 +195,7 @@
                 const result = await response.json();
                 alert(result.message);
 
-                // Refresh the list to show the new changes
-                // Find the issue in our 'allIssues' array and update it
+
                 const issueIndex = allIssues.findIndex(issue => issue.id === issueId);
                 if (issueIndex > -1) {
                     allIssues[issueIndex].status = newStatus;

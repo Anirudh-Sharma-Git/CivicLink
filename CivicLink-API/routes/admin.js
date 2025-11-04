@@ -1,4 +1,4 @@
-// routes/admin.js - The "rulebook" for our new admin website
+// routes/admin.js
 
 const express = require('express');
 const mysql = require('mysql2/promise');
@@ -11,8 +11,7 @@ const dbConfig = {
     database: process.env.DB_DATABASE
 };
 
-// --- Endpoint 1: GET /api/admin/workers ---
-// This gets the list of all workers for the "Assign To" dropdown.
+
 router.get('/workers', async (req, res) => {
     try {
         const connection = await mysql.createConnection(dbConfig);
@@ -25,19 +24,17 @@ router.get('/workers', async (req, res) => {
     }
 });
 
-// --- Endpoint 2: PUT /api/admin/issue/:issueId ---
-// This is the main "update" function for the admin.
 router.put('/issue/:issueId', async (req, res) => {
     try {
         const { issueId } = req.params;
         const { status, priority, assignedTo } = req.body;
 
-        // A simple check to make sure we have the data we need
+        
         if (!status || !priority) {
             return res.status(400).json({ message: "Status and priority are required." });
         }
 
-        // 'assignedTo' can be null if we are un-assigning, so we handle that
+        
         const workerId = assignedTo ? assignedTo : null;
 
         const connection = await mysql.createConnection(dbConfig);

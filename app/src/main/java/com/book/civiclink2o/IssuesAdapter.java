@@ -33,8 +33,8 @@ public class IssuesAdapter extends RecyclerView.Adapter<IssuesAdapter.IssueViewH
 
         holder.category.setText(issue.getCategory());
         holder.title.setText(issue.getDescription());
-        holder.location.setText(issue.getReportedByName()); // Placeholder, we'll fix this later
-        holder.time.setText(issue.getCreatedAt()); // Placeholder, we'll format this later
+        holder.location.setText(issue.getReportedByName());
+        holder.time.setText(issue.getCreatedAt());
         holder.upvotes.setText(String.valueOf(issue.getUpvotes()));
         holder.status.setText(issue.getStatus());
 
@@ -59,17 +59,12 @@ public class IssuesAdapter extends RecyclerView.Adapter<IssuesAdapter.IssueViewH
         return issueList.size();
     }
 
-    // --- THIS IS THE FIX: The missing method ---
-    /**
-     * Updates the list of issues displayed by the adapter.
-     * @param newIssues The new list of issues to display.
-     */
     public void updateIssues(List<Issue> newIssues) {
         issueList.clear();
         issueList.addAll(newIssues);
-        notifyDataSetChanged(); // This is crucial! It tells the RecyclerView to refresh itself.
+        notifyDataSetChanged();
     }
-    // --- END OF FIX ---
+
 
 
     public static class IssueViewHolder extends RecyclerView.ViewHolder {

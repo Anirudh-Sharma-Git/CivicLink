@@ -24,39 +24,28 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        // Find the views from our layout file
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         fab = findViewById(R.id.fab);
         bottomAppBar = findViewById(R.id.bottomAppBar);
 
-        // This prevents the placeholder item in the middle from being clickable
         bottomNavigationView.getMenu().findItem(R.id.navigation_placeholder).setEnabled(false);
 
-        // Ensure FAB is centered programmatically
         bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
 
-        // --- THIS IS THE NEW LOGIC TO HANDLE NOTIFICATION CLICKS ---
-        // We check the intent that started this activity
         handleIntent(getIntent());
-        // --- END OF NEW LOGIC ---
 
-        // Load the default fragment (HomeFragment) when the app starts
-        // We add a check to make sure we're not being launched from a notification
         if (savedInstanceState == null && getIntent().getStringExtra("NAVIGATE_TO") == null) {
             loadFragment(new HomeFragment());
         }
 
-        // Set up the listener for the bottom navigation view
         bottomNavigationView.setOnItemSelectedListener(item -> {
             Fragment selectedFragment = null;
             int itemId = item.getItemId();
 
-            // Handle navigation item selection - ignore placeholder clicks
             if (itemId == R.id.navigation_placeholder) {
-                return false; // Ignore clicks on the placeholder
+                return false;
             }
 
-            // A switch statement is a clean way to handle multiple menu items
             if (itemId == R.id.navigation_home) {
                 selectedFragment = new HomeFragment();
             } else if (itemId == R.id.navigation_reports) {
@@ -69,12 +58,11 @@ public class HomeActivity extends AppCompatActivity {
 
             if (selectedFragment != null) {
                 loadFragment(selectedFragment);
-                return true; // Return true to show the item as selected
+                return true;
             }
             return false;
         });
 
-        // Set up the listener for the floating action button (+)
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,17 +72,10 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    // --- THIS IS A NEW HELPER METHOD ---
-    /**
-     * Checks the intent that started this activity to see if it came from a notification.
-     * @param intent The intent to check.
-     */
+
     private void handleIntent(Intent intent) {
         if (intent != null && "MY_REPORTS".equals(intent.getStringExtra("NAVIGATE_TO"))) {
-            // The "extra" from our notification was found!
-            // Load the MyReportsFragment instead of the default HomeFragment.
             loadFragment(new MyReportsFragment());
-            // Also, update the bottom navigation bar to show the "My Reports" icon as selected.
             bottomNavigationView.setSelectedItemId(R.id.navigation_reports);
         }
     }

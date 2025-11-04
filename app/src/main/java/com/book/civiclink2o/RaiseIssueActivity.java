@@ -41,7 +41,6 @@ import retrofit2.Response;
 
 public class RaiseIssueActivity extends AppCompatActivity {
 
-    // (All your existing variables are correct and do not need to change)
     private ImageView issueImageView, gpsButton;
     private MaterialButton takePhotoButton, galleryButton, submitButton;
     private AutoCompleteTextView categoryAutoCompleteTextView;
@@ -62,7 +61,6 @@ public class RaiseIssueActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_raise_issue);
-        // (All your onCreate code is correct and does not need to change)
         sessionManager = new SessionManager(getApplicationContext());
         apiService = ApiClient.getClient().create(ApiService.class);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -77,7 +75,6 @@ public class RaiseIssueActivity extends AppCompatActivity {
     }
 
     private void initializeViews() {
-        // (This method is unchanged)
         issueImageView = findViewById(R.id.issueImageView);
         takePhotoButton = findViewById(R.id.takePhotoButton);
         galleryButton = findViewById(R.id.galleryButton);
@@ -89,7 +86,6 @@ public class RaiseIssueActivity extends AppCompatActivity {
     }
 
     private void setupLaunchers() {
-        // (This method is unchanged)
         getContentLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), result -> {
             if (result != null) {
                 selectedImageUri = result;
@@ -117,7 +113,6 @@ public class RaiseIssueActivity extends AppCompatActivity {
     }
 
     private void setupButtonClickListeners() {
-        // (This method is unchanged)
         takePhotoButton.setEnabled(false);
         takePhotoButton.setText("Camera (Soon)");
         galleryButton.setOnClickListener(v -> getContentLauncher.launch("image/*"));
@@ -126,7 +121,6 @@ public class RaiseIssueActivity extends AppCompatActivity {
     }
 
     private void handleSubmitIssue() {
-        // (This method is unchanged, it was already correct)
         String category = categoryAutoCompleteTextView.getText().toString();
         String description = descriptionEditText.getText().toString().trim();
         int userId = sessionManager.getUserId();
@@ -167,17 +161,12 @@ public class RaiseIssueActivity extends AppCompatActivity {
                 });
     }
 
-    // --- THIS IS A NEW HELPER METHOD ---
-    /**
-     * Gets the file extension (e.g., "jpg", "png") from a content Uri.
-     */
     private String getFileExtension(Context context, Uri uri) {
         ContentResolver cR = context.getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
-    // --- THIS METHOD IS NOW CORRECTED ---
     private MultipartBody.Part prepareFilePart(String partName, Uri fileUri) {
         try {
             Context context = getApplicationContext();
@@ -187,17 +176,14 @@ public class RaiseIssueActivity extends AppCompatActivity {
                 return null;
             }
 
-            // THE FIX: We now create a proper filename with an extension
             String fileExtension = getFileExtension(context, fileUri);
             String fileName = partName + "-" + System.currentTimeMillis() + "." + fileExtension;
-            // --- END OF FIX ---
 
             RequestBody requestFile = RequestBody.create(
                     MediaType.parse(context.getContentResolver().getType(fileUri)),
                     file
             );
 
-            // Send the real filename to the server
             return MultipartBody.Part.createFormData(partName, fileName, requestFile);
         } catch (Exception e) {
             e.printStackTrace();
@@ -205,7 +191,6 @@ public class RaiseIssueActivity extends AppCompatActivity {
         }
     }
 
-    // (The notification and location methods are unchanged)
     private void triggerNotification() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {

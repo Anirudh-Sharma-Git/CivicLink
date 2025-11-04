@@ -1,6 +1,5 @@
 package com.book.civiclink2o;
 
-// This is the "data package" we will send to the server when creating a new issue.
 public class IssueRequest {
     private String category;
     private String description;

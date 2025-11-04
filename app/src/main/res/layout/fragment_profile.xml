@@ -7,7 +7,6 @@
     android:background="@color/app_background"
     tools:context=".ProfileFragment">
 
-    <!-- The fixed header -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +24,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- The scrollable content -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -100,7 +98,6 @@
                         app:layout_constraintStart_toStartOf="@id/profile_name"
                         app:layout_constraintTop_toBottomOf="@id/profile_role" />
 
-                    <!-- THE FIX: Added the missing ID here -->
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/editProfileButton"
                         style="?attr/materialButtonOutlinedStyle"
@@ -179,7 +176,6 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Statistics Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -264,7 +260,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Settings Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -354,7 +349,6 @@
             </androidx.cardview.widget.CardView>
 
 
-            <!-- About App Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -465,7 +459,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Logout Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/logoutButton"
                 android:layout_width="match_parent"

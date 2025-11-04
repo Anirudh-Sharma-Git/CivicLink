@@ -85,7 +85,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     }
                 }
             }
-            // Move camera to the first issue in the list
             LatLng firstIssueLocation = new LatLng(issuesList.get(0).getLatitude(), issuesList.get(0).getLongitude());
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstIssueLocation, 12f));
         } else {
@@ -114,7 +113,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             upvotes.setText(String.valueOf(issue.getUpvotes()));
             status.setText(issue.getStatus());
 
-            // (You can add the switch statement for status color here if you like)
 
             bottomSheetContainer.removeAllViews();
             bottomSheetContainer.addView(sheetView);
@@ -146,7 +144,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
     }
 
-    // Helper method to get the correct colored marker icon
     private float getMarkerColor(String status) {
         if (status == null) return BitmapDescriptorFactory.HUE_RED;
         switch (status) {

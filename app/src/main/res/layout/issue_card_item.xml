@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
+        <!--display category -->
         <TextView
             android:id="@+id/issue_category"
             android:layout_width="wrap_content"

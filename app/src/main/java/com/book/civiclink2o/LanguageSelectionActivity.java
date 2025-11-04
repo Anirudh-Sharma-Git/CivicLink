@@ -1,4 +1,4 @@
-package com.book.civiclink2o; // Your package name is correct here
+package com.book.civiclink2o;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +15,6 @@ public class LanguageSelectionActivity extends AppCompatActivity implements View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_language_selection);
 
-        // Find all the CardView elements
         CardView cardEnglish = findViewById(R.id.cardEnglish);
         CardView cardHindi = findViewById(R.id.cardHindi);
         CardView cardBengali = findViewById(R.id.cardBengali);
@@ -25,7 +24,6 @@ public class LanguageSelectionActivity extends AppCompatActivity implements View
         CardView cardTelugu = findViewById(R.id.cardTelugu);
         CardView cardMarathi = findViewById(R.id.cardMarathi);
 
-        // Set this activity as the OnClickListener for all cards
         cardEnglish.setOnClickListener(this);
         cardHindi.setOnClickListener(this);
         cardBengali.setOnClickListener(this);
@@ -39,7 +37,6 @@ public class LanguageSelectionActivity extends AppCompatActivity implements View
     @Override
     public void onClick(View v) {
         String language = "";
-        // Using if-else if for older Android compatibility
         int id = v.getId();
         if (id == R.id.cardEnglish) {
             language = "English";
@@ -62,16 +59,12 @@ public class LanguageSelectionActivity extends AppCompatActivity implements View
         if (!language.isEmpty()) {
             Toast.makeText(this, language + " selected", Toast.LENGTH_SHORT).show();
 
-            // Create an Intent to open MainActivity
             Intent intent = new Intent(LanguageSelectionActivity.this, LoginActivity.class);
 
-            // Pass the selected language to the MainActivity
             intent.putExtra("SELECTED_LANGUAGE", language);
 
-            // Start the MainActivity
             startActivity(intent);
 
-            // Finish this activity so the user cannot return to it by pressing the back button
             finish();
         }
     }

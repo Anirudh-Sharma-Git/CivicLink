@@ -25,7 +25,7 @@
         app:tint="@color/logo_background"
         android:contentDescription="Center on my location" />
 
-    <!-- This is the container for our bottom sheet -->
+
     <FrameLayout
         android:id="@+id/bottom_sheet_container"
         android:layout_width="match_parent"

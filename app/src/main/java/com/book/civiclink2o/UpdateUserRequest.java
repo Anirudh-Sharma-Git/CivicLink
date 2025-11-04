@@ -4,8 +4,8 @@ public class UpdateUserRequest {
     private String name;
     private String email;
     private String phoneNumber;
-    private String currentPassword; // Can be null
-    private String newPassword;     // Can be null
+    private String currentPassword;
+    private String newPassword;
 
     public UpdateUserRequest(String name, String email, String phoneNumber, String currentPassword, String newPassword) {
         this.name = name;

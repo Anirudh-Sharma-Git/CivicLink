@@ -16,7 +16,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    // --- UI Elements ---
     private TextView userIdTextView;
     // THE FIX: Use TextInputEditText to match the modern layout
     private TextInputEditText nameEditText, emailEditText, phoneEditText;
@@ -24,7 +23,6 @@ public class EditProfileActivity extends AppCompatActivity {
     private TextInputEditText currentPasswordEditText, newPasswordEditText, confirmNewPasswordEditText;
     private MaterialButton updateProfileButton;
 
-    // --- Backend and Session ---
     private ApiService apiService;
     private SessionManager sessionManager;
     private int currentUserId = -1;
@@ -59,7 +57,6 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void setupApiService() {
-        // THE FIX: Get the telephone system from our new, central ApiClient
         apiService = ApiClient.getClient().create(ApiService.class);
     }
 

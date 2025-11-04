@@ -5,5 +5,5 @@ public class UserDetails {
     public String name;
     public String email;
     public String phoneNumber;
-    public boolean hasPassword; // This is the crucial field from our server
+    public boolean hasPassword;
 }

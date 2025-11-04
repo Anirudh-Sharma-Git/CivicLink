@@ -1,7 +1,7 @@
 package com.book.civiclink2o;
 
-// This is a simple data class. Its only job is to hold the data
-// for a new user before we send it to the server.
+//hold the data of user
+
 public class User {
     private String name;
     private String email;

@@ -8,7 +8,6 @@
     android:background="@color/app_background"
     tools:context=".HomeFragment">
 
-    <!-- The AppBarLayout contains everything that should be part of the fixed/collapsing header -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
@@ -22,7 +21,6 @@
             android:orientation="vertical"
             android:paddingTop="16dp">
 
-            <!-- Search Bar (No changes here) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -51,7 +49,6 @@
                     android:importantForAutofill="no" />
             </LinearLayout>
 
-            <!-- Filter Chips (No changes here) -->
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -102,7 +99,6 @@
                 </LinearLayout>
             </HorizontalScrollView>
 
-            <!-- The Interactive Google Map -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
@@ -118,7 +114,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
-                <!-- THE ONLY CHANGE: The "Expand" button you wanted -->
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/expandMapButton"
                     android:layout_width="wrap_content"
@@ -140,7 +135,6 @@
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- The dynamic list of issue cards (No changes here) -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/issuesRecyclerView"
         android:layout_width="match_parent"

@@ -25,15 +25,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MyReportsFragment extends Fragment implements View.OnClickListener {
 
-    // --- UI Elements ---
     private RecyclerView myReportsRecyclerView;
     private IssuesAdapter issuesAdapter;
     private List<TextView> filterChips;
 
-    // --- Data & API ---
     private ApiService apiService;
     private SessionManager sessionManager;
-    private List<Issue> myIssues = new ArrayList<>(); // Master list of the user's issues
+    private List<Issue> myIssues = new ArrayList<>();
 
     @Nullable
     @Override
@@ -45,13 +43,11 @@ public class MyReportsFragment extends Fragment implements View.OnClickListener 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // --- Initialize everything ---
         sessionManager = new SessionManager(getContext());
         setupRecyclerView(view);
         setupFilterChips(view);
         setupApiService();
 
-        // --- Start loading the data ---
         fetchUserIssues();
     }
 
@@ -79,7 +75,6 @@ public class MyReportsFragment extends Fragment implements View.OnClickListener 
     }
 
     private void setupApiService() {
-        // THE FIX: Get the telephone system from our new, central ApiClient
         apiService = ApiClient.getClient().create(ApiService.class);
     }
 
@@ -87,20 +82,18 @@ public class MyReportsFragment extends Fragment implements View.OnClickListener 
         int userId = sessionManager.getUserId();
         if (userId == -1) {
             Toast.makeText(getContext(), "You are not logged in.", Toast.LENGTH_SHORT).show();
-            // Optionally, clear the list if a guest user gets here
             myIssues.clear();
             filterList("All");
             return;
         }
 
-        // Make the specific API call to get issues for this user
         apiService.getIssuesForUser(userId).enqueue(new Callback<List<Issue>>() {
             @Override
             public void onResponse(Call<List<Issue>> call, Response<List<Issue>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     myIssues.clear();
                     myIssues.addAll(response.body());
-                    filterList("All"); // Show all of the user's issues by default
+                    filterList("All");
                 } else {
                     Toast.makeText(getContext(), "Failed to load your reports", Toast.LENGTH_SHORT).show();
                 }

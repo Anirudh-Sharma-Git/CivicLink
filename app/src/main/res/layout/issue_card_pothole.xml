@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
+        <!--Category-->
         <TextView
             android:id="@+id/pothole_category"
             android:layout_width="wrap_content"

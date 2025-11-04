@@ -1,4 +1,4 @@
-// routes/issues.js - The FINAL version with the correct filename logic
+// routes/issues.js 
 
 const express = require('express');
 const mysql = require('mysql2/promise');
@@ -13,25 +13,19 @@ const dbConfig = {
     database: process.env.DB_DATABASE
 };
 
-// --- Multer Configuration (The "Receiving Dock") ---
+//Multer Configuration
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'uploads/');
     },
-    // --- THIS IS THE FIX ---
-    // We will now correctly use the file extension from the file the app sends.
     filename: function (req, file, cb) {
-        // file.originalname will be something like "image-12345.jpg" (from our app)
-        // path.extname will extract the ".jpg"
         const uniqueSuffix = Date.now() + path.extname(file.originalname);
         cb(null, file.fieldname + '-' + uniqueSuffix);
     }
-    // --- END OF FIX ---
 });
 
 const upload = multer({ storage: storage });
 
-// --- GET Endpoints (Unchanged) ---
 router.get('/', async (req, res) => {
     try {
         const connection = await mysql.createConnection(dbConfig);
@@ -72,7 +66,7 @@ router.get('/user/:userId', async (req, res) => {
     }
 });
 
-// --- POST Endpoint (Unchanged, this part was already correct) ---
+
 router.post('/', upload.single('image'), async (req, res) => {
     const { category, description, latitude, longitude, reportedBy } = req.body;
     const imageFile = req.file;

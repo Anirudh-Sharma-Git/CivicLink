@@ -19,7 +19,7 @@ public class OtpActivity extends AppCompatActivity {
     private EditText otpEditText;
     private MaterialButton verifyOtpButton;
     private String phoneNumber;
-    private String userName; // This will be NOT NULL only if it's a sign-up
+    private String userName;
     private ApiService apiService;
     private SessionManager sessionManager;
 
@@ -40,7 +40,6 @@ public class OtpActivity extends AppCompatActivity {
             otpSubtitle.setText("An OTP has been sent to +91 " + phoneNumber);
         }
 
-        // THE FIX: Get the telephone system from our new, central ApiClient
         apiService = ApiClient.getClient().create(ApiService.class);
 
         verifyOtpButton.setOnClickListener(v -> {
@@ -58,13 +57,10 @@ public class OtpActivity extends AppCompatActivity {
 
         Call<LoginResponse> apiCall;
 
-        // --- THE FIX: The app now decides which endpoint to call ---
         if (name != null) {
-            // If we have a name, it's a SIGN-UP
             VerifyOtpRequest request = new VerifyOtpRequest(phone, otp, name);
             apiCall = apiService.verifyOtpForSignUp(request);
         } else {
-            // If there's no name, it's a LOGIN
             VerifyOtpRequest request = new VerifyOtpRequest(phone, otp);
             apiCall = apiService.verifyOtpForLogin(request);
         }
@@ -83,11 +79,10 @@ public class OtpActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 } else {
-                    // This will now show the correct error message from the server
                     String errorMessage = "Invalid OTP or error occurred.";
                     try {
                         if (response.errorBody() != null) {
-                            // A simple way to get the error message from the server's response
+
                             errorMessage = response.errorBody().string().split("\"")[3];
                         }
                     } catch (Exception e) { e.printStackTrace(); }

@@ -1,7 +1,5 @@
--- This first line tells MySQL which database we want to work in.
 USE civiclink_db;
 
--- This creates the 'users' table.
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -15,7 +13,6 @@ CREATE TABLE users (
     memberSince TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- This creates the 'issues' table and links it to the 'users' table.
 CREATE TABLE issues (
     id INT AUTO_INCREMENT PRIMARY KEY,
     category VARCHAR(255) NOT NULL,

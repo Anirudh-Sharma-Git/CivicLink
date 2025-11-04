@@ -21,7 +21,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- Logo and Title section -->
             <ImageView
                 android:id="@+id/logoImageView"
                 android:layout_width="100dp"
@@ -69,7 +68,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/subtitleTextViewEn" />
 
-            <!-- Language Grid -->
             <GridLayout
                 android:id="@+id/languageGrid"
                 android:layout_width="0dp"
@@ -84,7 +82,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/subtitleTextViewNative">
 
-                <!-- All CardViews for languages go here... -->
                 <!-- Card English -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardEnglish"
@@ -402,7 +399,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
-    <!-- Spacer to account for navigation bar -->
     <Space
         android:id="@+id/bottomSpacer"
         android:layout_width="0dp"

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- THE FIX: The root is now a CoordinatorLayout -->
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,7 +7,6 @@
     android:background="@color/app_background"
     tools:context=".LeaderboardFragment">
 
-    <!-- THE FIX: The title is now in an AppBarLayout, making it the fixed header -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,7 +36,6 @@
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- THE FIX: The content is now in a NestedScrollView that scrolls under the header -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -50,7 +47,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Coming Soon Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -88,13 +84,11 @@
                         android:text="@string/coming_soon_description"
                         android:textColor="@color/text_secondary" />
 
-                    <!-- Checklist -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:orientation="vertical">
-                        <!-- Item 1 -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -112,7 +106,6 @@
                                 android:text="@string/coming_soon_item_1"
                                 android:textColor="@color/text_secondary"/>
                         </LinearLayout>
-                        <!-- Item 2 -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -131,7 +124,6 @@
                                 android:text="@string/coming_soon_item_2"
                                 android:textColor="@color/text_secondary"/>
                         </LinearLayout>
-                        <!-- Item 3 -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -150,7 +142,6 @@
                                 android:text="@string/coming_soon_item_3"
                                 android:textColor="@color/text_secondary"/>
                         </LinearLayout>
-                        <!-- Item 4 -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -169,7 +160,6 @@
                                 android:text="@string/coming_soon_item_4"
                                 android:textColor="@color/text_secondary"/>
                         </LinearLayout>
-                        <!-- Item 5 -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -192,7 +182,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Preview Design -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -200,7 +189,6 @@
                 android:text="@string/preview_design_title"
                 android:textColor="@color/text_secondary" />
 
-            <!-- Gold User -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -279,7 +267,6 @@
                         android:textSize="12sp"/>
                 </LinearLayout>
             </LinearLayout>
-            <!-- Silver User -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -358,7 +345,6 @@
                         android:textSize="12sp"/>
                 </LinearLayout>
             </LinearLayout>
-            <!-- Bronze User -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -438,7 +424,6 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Bottom Cards -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
